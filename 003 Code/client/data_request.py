@@ -1,5 +1,6 @@
 import requests
 import json
+import schedule
 
 from sensor_module import read_adc, read_dht22, convert_to_percentage
 
@@ -11,14 +12,16 @@ humidity, temperature = read_dht22()
 moisture = read_adc(0)
 moisture = convert_to_percentage(moisture)
 
-
+#schdule.every(1).hours.do(value)
 
 if humidity is not None and temperature is not None:
+    
     data = {
         'humidity': format(humidity,".2f"),
         'temperature': format(temperature,".2f"),
         'moisture': format(moisture,".2f")
     }
+    
     response = requests.post(url, data=json.dumps(data), headers=headers)
     print(response.status_code)
     
