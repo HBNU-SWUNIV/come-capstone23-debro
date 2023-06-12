@@ -21,7 +21,7 @@ def read_adc(channel):
     data = ((adc[1]&15) << 8) + adc[2]
     
     return data
-# 퍼센테이지 변환 함수, fc28의 경우 값이 낮을 수록 수분이 많다는 뜻
+# 퍼센테이지 변환 함수, FC28의 경우 값이 낮을 수록 수분이 많다는 뜻
 def convert_to_percentage(adc_value):
     max_adc_value = 4095  # ADC의 최대값
     percentage = 100.0-((adc_value*100)/max_adc_value)
