@@ -21,7 +21,7 @@ def read_adc(channel):
     data = ((adc[1]&15) << 8) + adc[2]
     
     return data
-# 퍼센테이지 변환 함수, FC28의 경우 값이 낮을 수록 수분이 많다는 뜻
+# 퍼센테이지 변환 함수, fc28의 경우 값이 낮을 수록 수분이 많다는 뜻
 def convert_to_percentage(adc_value):
     max_adc_value = 4095  # ADC의 최대값
     percentage = 100.0-((adc_value*100)/max_adc_value)
@@ -31,3 +31,14 @@ def convert_to_percentage(adc_value):
 def read_dht22():
     humidity, temperature = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, sensor_pin)
     return humidity, temperature
+
+#pH 센서 값을 읽어 오는 함수
+## 값에 오류 있음 사용 주의
+def get_pH_value(channel):
+    # channel = pH 센서를 연결한 adc 번호
+
+    adc_value = read_adc(channel)
+    voltage = adc_value * (5.0 / 4095) # 아날로그 값을 전압으로 변환
+    pH_value = 3.5 * voltage  # pH 값을 계산
+
+    return pH_value
