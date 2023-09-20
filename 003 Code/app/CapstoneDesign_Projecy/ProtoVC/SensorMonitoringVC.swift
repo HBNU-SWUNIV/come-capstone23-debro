@@ -41,11 +41,7 @@ class SensorMonitoringVC: UIViewController {
     @StateObject var infoVM: InfoVM = InfoVM()
     
     @IBOutlet weak var dataLabel: UILabel!
-    
-  
     @IBOutlet weak var dataTemperatureLabel: UILabel!
-    
-    
     @IBOutlet weak var dataMoistureLabel: UILabel!
     
     

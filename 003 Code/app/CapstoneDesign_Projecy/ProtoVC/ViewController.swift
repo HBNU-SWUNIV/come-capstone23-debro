@@ -32,6 +32,12 @@ class ViewController: UIViewController {
             let SensorMonitoringVC = segue.destination as! SensorMonitoringVC
         }
         
+        if segue.identifier == "toChartVC"{
+            let ChartVC = segue.destination as! ChartVC
+        }
+        
+        
+        
         
     }
     
