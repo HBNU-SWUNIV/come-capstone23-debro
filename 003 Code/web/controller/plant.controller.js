@@ -1,4 +1,4 @@
-const Sensor = require('../model/sensor.model.js');
+const Plant = require('../model/plant.model.js');
 
 exports.create = (req, res) => {
     if (!req.body) {
@@ -7,24 +7,24 @@ exports.create = (req, res) => {
         });
     }
 
-    const sensor = new Sensor({
-        humidity: req.body.humidity,
-        temperature: req.body.temperature,
-        moisture: req.body.moisture,
+    const plant = new Plant({
+        length: req.body.length,
     });
 
-    Sensor.create(sensor, (err, data) => {
+    Plant.create(plant, (err, data) => {
+        console.log(data);
         if (err) {
             res.statue(500).send({
                 message: err.message || 'Some error occurred while creating the Sensor.',
             });
         }
-        return res.send({ success: true });
+        if (data) return res.send({ success: true });
+        else return res.send({ success: false });
     });
 };
 
 exports.findAll = (req, res) => {
-    Sensor.getAll((err, data) => {
+    Plant.getAll((err, data) => {
         if (err) {
             res.statue(500).send({
                 message: err.message || 'Some error occurred while retrieving sensor.',
@@ -35,7 +35,7 @@ exports.findAll = (req, res) => {
 };
 
 exports.findRecent = (req, res) => {
-    Sensor.findRecent((err, data) => {
+    Plant.findRecent((err, data) => {
         if (err) {
             res.statue(500).send({
                 message: err.message || 'Some error occurred while retrieving sensor.',
@@ -46,15 +46,15 @@ exports.findRecent = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-    Sensor.remove(req.params.sensorId, (err, data) => {
+    Plant.remove(req.params.plantId, (err, data) => {
         if (err) {
             if (err.kind === 'not_found') {
                 res.statue(404).send({
-                    message: `Not found Sensor with id ${req.params.sensorId}.`,
+                    message: `Not found Sensor with id ${req.params.plantId}.`,
                 });
             } else {
                 res.statue(500).send({
-                    message: `Could not delete Sensor with id ${req.params.sensorId}.`,
+                    message: `Could not delete Sensor with id ${req.params.plantId}.`,
                 });
             }
         } else res.send({ message: `Sensor was deleted successfully!` });
@@ -62,7 +62,7 @@ exports.delete = (req, res) => {
 };
 
 exports.deleteAll = (req, res) => {
-    Sensor.removeAll((err, data) => {
+    Plant.removeAll((err, data) => {
         if (err) {
             res.statue(500).send({
                 message: err.message || 'Some error occurred while removing all sensor.',

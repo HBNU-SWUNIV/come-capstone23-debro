@@ -1,44 +1,41 @@
 module.exports = (app) => {
-    const sensor = require('../controller/sensor.controller.js');
+    const plant = require('../controller/plant.controller.js');
+
     /**
      * @swagger
      * paths:
-     *  /sensor:
+     *  /plant:
      *   post:
      *    tags:
      *    - sensor
-     *    description: 센서 값 저장
+     *    description: 길이 저장
      *    parameters:
      *    - in: body
      *      name: body
      *      required: true
      *      schema:
      *       properties:
-     *          humidity:
-     *              type: string
-     *          temperature:
-     *              type: string
-     *          moisture:
+     *          length:
      *              type: string
      *    responses:
      *     200:
-     *      description: 센서 값 저장 성공
+     *      description: 저장 성공
      *      schema:
      *       properties:
      *        success:
      *         type: string
      *
      */
-    app.post('/sensor', sensor.create);
+    app.post('/plant', plant.create);
 
     /**
      * @swagger
      * paths:
-     *  /sensor:
+     *  /plant:
      *   get:
      *    tags:
-     *    - sensor
-     *    description: 센서 값 조회
+     *    - plant
+     *    description: 길이 조회
      *    responses:
      *     200:
      *      description: 조회 성공
@@ -49,16 +46,16 @@ module.exports = (app) => {
      *
      */
 
-    app.get('/sensor', sensor.findAll);
+    app.get('/plant', plant.findAll);
 
     /**
      * @swagger
      * paths:
-     *  /sensor/recent:
+     *  /plant/recent:
      *   get:
      *    tags:
-     *    - sensor
-     *    description: 최근 센서 값 조회
+     *    - plant
+     *    description: 최근 길이 조회
      *    responses:
      *     200:
      *      description: 조회 성공
@@ -68,16 +65,17 @@ module.exports = (app) => {
      *         type: string
      *
      */
-    app.get('/sensor/recent', sensor.findRecent);
+
+    app.get('/plant/recent', plant.findRecent);
 
     /**
      * @swagger
      * paths:
-     *  /sensor/:sensorId:
+     *  /plant/:plantId:
      *   delete:
      *    tags:
-     *    - sensor
-     *    description: 센서 값 삭제
+     *    - plant
+     *    description: 길이 값 삭제
      *    responses:
      *     200:
      *      description: 삭제 성공
@@ -87,5 +85,5 @@ module.exports = (app) => {
      *         type: string
      *
      */
-    app.delete('/sensor/:sensorId', sensor.delete);
+    app.delete('/plant/:plantId', plant.delete);
 };
