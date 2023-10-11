@@ -56,5 +56,7 @@
 ## Conclusion
 
 ## Project Outcome
-
-<!-- <img scr="./002 Presentation/Images/1.png" width="700" height="300"> -->
+<img src="002 Presentation/Images/1.png" width="390" height="890"><img src="002 Presentation/Images/2.png" width="390" height="890">
+<img src="002 Presentation/Images/3.png" width="390" height="890"><img src="002 Presentation/Images/4.png" width="390" height="890">
+<img src="002 Presentation/Images/5.png" width="390" height="890"><img src="002 Presentation/Images/6.png" width="390" height="890">
+<img src="002 Presentation/Images/7.png" width="390" height="890">
