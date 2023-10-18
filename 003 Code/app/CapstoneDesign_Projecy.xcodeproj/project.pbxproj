@@ -12,8 +12,13 @@
 		DC7290372AA866F100167266 /* LoginVC_onlycode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7290362AA866F100167266 /* LoginVC_onlycode.swift */; };
 		DC74DBEC2A8E18510049F4A1 /* MQTTNIO in Frameworks */ = {isa = PBXBuildFile; productRef = DC74DBEB2A8E18510049F4A1 /* MQTTNIO */; };
 		DC76A6E52AA0896100A27A96 /* SotoS3 in Frameworks */ = {isa = PBXBuildFile; productRef = DC76A6E42AA0896100A27A96 /* SotoS3 */; };
+		DC7736562AD7CCB6008CF2C9 /* KakaoAddressVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7736552AD7CCB6008CF2C9 /* KakaoAddressVC.swift */; };
+		DC7743B12ACDD28C002160AA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7743AF2ACDD28C002160AA /* ContentView.swift */; };
+		DC7743B22ACDD28C002160AA /* ChartViewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7743B02ACDD28C002160AA /* ChartViewApp.swift */; };
 		DC7C6CA92A1F424900DDEE03 /* MultipartForm in Frameworks */ = {isa = PBXBuildFile; productRef = DC7C6CA82A1F424900DDEE03 /* MultipartForm */; };
 		DC8130C72A68D96F000AC7A9 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = DC8130C62A68D96F000AC7A9 /* DGCharts */; };
+		DC82F01D2ADE885000C9A094 /* UIRefreshProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC82F01C2ADE885000C9A094 /* UIRefreshProtocol.swift */; };
+		DC82F0212ADE939D00C9A094 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC82F0202ADE939D00C9A094 /* Assets.xcassets */; };
 		DC8388072A0CB91000D51227 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8388062A0CB91000D51227 /* AppDelegate.swift */; };
 		DC8388092A0CB91000D51227 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8388082A0CB91000D51227 /* SceneDelegate.swift */; };
 		DC83880B2A0CB91000D51227 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC83880A2A0CB91000D51227 /* ViewController.swift */; };
@@ -42,6 +47,11 @@
 
 /* Begin PBXFileReference section */
 		DC7290362AA866F100167266 /* LoginVC_onlycode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC_onlycode.swift; sourceTree = "<group>"; };
+		DC7736552AD7CCB6008CF2C9 /* KakaoAddressVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAddressVC.swift; sourceTree = "<group>"; };
+		DC7743AF2ACDD28C002160AA /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		DC7743B02ACDD28C002160AA /* ChartViewApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartViewApp.swift; sourceTree = "<group>"; };
+		DC82F01C2ADE885000C9A094 /* UIRefreshProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRefreshProtocol.swift; sourceTree = "<group>"; };
+		DC82F0202ADE939D00C9A094 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC8388032A0CB91000D51227 /* CapstoneDesign_Projecy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CapstoneDesign_Projecy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC8388062A0CB91000D51227 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DC8388082A0CB91000D51227 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +97,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DC7743AE2ACDD259002160AA /* ChartView */ = {
+			isa = PBXGroup;
+			children = (
+				DC7743B02ACDD28C002160AA /* ChartViewApp.swift */,
+				DC7743AF2ACDD28C002160AA /* ContentView.swift */,
+			);
+			path = ChartView;
+			sourceTree = "<group>";
+		};
+		DC82F01E2ADE935500C9A094 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DC82F01F2ADE936200C9A094 /* img */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		DC82F01F2ADE936200C9A094 /* img */ = {
+			isa = PBXGroup;
+			children = (
+				DC82F0202ADE939D00C9A094 /* Assets.xcassets */,
+			);
+			path = img;
+			sourceTree = "<group>";
+		};
 		DC8387FA2A0CB91000D51227 = {
 			isa = PBXGroup;
 			children = (
@@ -106,6 +141,7 @@
 		DC8388052A0CB91000D51227 /* CapstoneDesign_Projecy */ = {
 			isa = PBXGroup;
 			children = (
+				DC82F01E2ADE935500C9A094 /* Resources */,
 				DC89E2072AA8401E0092EE18 /* ViewModel */,
 				DC91203C2AA84F3A00570EC6 /* Components */,
 				DC89E1FC2AA83D380092EE18 /* RenewalVC */,
@@ -139,13 +175,16 @@
 		DC89E1FC2AA83D380092EE18 /* RenewalVC */ = {
 			isa = PBXGroup;
 			children = (
-				DC89E1FF2AA83E460092EE18 /* MainVC.swift */,
 				DC89E2012AA83E540092EE18 /* LoginVC.swift */,
+				DC89E1FF2AA83E460092EE18 /* MainVC.swift */,
+				DC91203A2AA84DE900570EC6 /* RegistPlantVC.swift */,
 				DC89E2032AA83EBA0092EE18 /* PlantInfoVC.swift */,
 				DC89E2052AA83F5C0092EE18 /* PlantPicVC.swift */,
-				DC91203A2AA84DE900570EC6 /* RegistPlantVC.swift */,
+				DC7736552AD7CCB6008CF2C9 /* KakaoAddressVC.swift */,
+				DC7743AE2ACDD259002160AA /* ChartView */,
 				DC91203D2AA84F5600570EC6 /* CustomViewTest.swift */,
 				DC7290362AA866F100167266 /* LoginVC_onlycode.swift */,
+				DC82F01C2ADE885000C9A094 /* UIRefreshProtocol.swift */,
 			);
 			path = RenewalVC;
 			sourceTree = "<group>";
@@ -247,6 +286,7 @@
 			files = (
 				DC8388132A0CB91200D51227 /* LaunchScreen.storyboard in Resources */,
 				DC8388102A0CB91200D51227 /* Assets.xcassets in Resources */,
+				DC82F0212ADE939D00C9A094 /* Assets.xcassets in Resources */,
 				DC83880E2A0CB91000D51227 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -258,17 +298,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC7743B22ACDD28C002160AA /* ChartViewApp.swift in Sources */,
 				DC8388232A0CCD6E00D51227 /* GivewaterVC.swift in Sources */,
+				DC7736562AD7CCB6008CF2C9 /* KakaoAddressVC.swift in Sources */,
 				DC91203E2AA84F5600570EC6 /* CustomViewTest.swift in Sources */,
 				DC89E2002AA83E460092EE18 /* MainVC.swift in Sources */,
 				DCE437912A600AE4000AE7F6 /* ChartVC.swift in Sources */,
 				DC83880B2A0CB91000D51227 /* ViewController.swift in Sources */,
 				DC91203B2AA84DE900570EC6 /* RegistPlantVC.swift in Sources */,
+				DC7743B12ACDD28C002160AA /* ContentView.swift in Sources */,
 				DC8388252A0CCDAA00D51227 /* SensorMonitoringVC.swift in Sources */,
 				DC7290372AA866F100167266 /* LoginVC_onlycode.swift in Sources */,
 				DC8388072A0CB91000D51227 /* AppDelegate.swift in Sources */,
 				DC89E2042AA83EBA0092EE18 /* PlantInfoVC.swift in Sources */,
 				DC8D594F2A15FC62005C8BFD /* UserInfoAPI.swift in Sources */,
+				DC82F01D2ADE885000C9A094 /* UIRefreshProtocol.swift in Sources */,
 				DC8388092A0CB91000D51227 /* SceneDelegate.swift in Sources */,
 				DC89E2062AA83F5C0092EE18 /* PlantPicVC.swift in Sources */,
 				DC8D59512A161368005C8BFD /* InfoVM.swift in Sources */,
@@ -352,7 +396,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -406,7 +450,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -431,7 +475,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -460,7 +504,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

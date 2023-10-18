@@ -10,6 +10,8 @@ import MQTTNIO
 import AWSS3
 import CocoaMQTT
 import CocoaMQTTWebSocket
+import AWSCore
+//import AWSMobileClient
 
 
 
@@ -20,11 +22,11 @@ class CameraVC: UIViewController, CocoaMQTT5Delegate{
     
     @IBOutlet weak var photoImageView: UIImageView!
     
-    let bucketName = "myapp-bucketname"
-    let accessKey = "SSGASLNTTCLXGJNPRLNE"
-    let secretKey = "60ayImDHNVF+HmgP5TCrOzvLIspqBFmpbKShOfxA"
+    let bucketName = "capston-bucket"
+    let accessKey = "AKIAZJGVIYOU6JH5ZN4C"
+    let secretKey = "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"
     let utilityKey = "utility-key"
-    var fileKey = "profile/image/"
+    var fileKey = "plant_image/"
     
     
     
@@ -48,7 +50,7 @@ class CameraVC: UIViewController, CocoaMQTT5Delegate{
         )
         
         let dateFormat = DateFormatter()
-        dateFormat.dateFormat = "yyyyMMdd/"
+        dateFormat.dateFormat = "yyyy-MM-dd HH:mm:ss"
         fileKey += dateFormat.string(from: Date())
         fileKey += String(Int64(Date().timeIntervalSince1970)) + "_"
         fileKey += UUID().uuidString + ".png"
@@ -59,27 +61,6 @@ class CameraVC: UIViewController, CocoaMQTT5Delegate{
     @IBAction func requestButtonTapped(_ sender: UIButton) {
         var formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        
-        
-        
-        // 58.233.72.16 2883 topic은 debro/camera로 구독했으며 카메라 실행 명령은 run camera 입니다
-        //        let client = MQTTClient(
-        //            configuration: .init(
-        //                target: .host("58.233.72.16", port: 2883)
-        //            ),
-        //            eventLoopGroupProvider: .createNew
-        //        )
-        //        client.connect()
-        //
-        //        client.whenConnected { response in
-        //            print("Connected, is session present: \(response.isSessionPresent)")
-        //        }
-        //
-        //
-        //        client.subscribe(to: "debro/camera")
-        //        client.publish("run camera", to: "debro/camera")
-        
-        
         
         let clientID = "CocoaMQTT5-" + String(ProcessInfo().processIdentifier)
         let mqtt5 = CocoaMQTT5(clientID: clientID, host: "58.233.72.16", port: 2883)
