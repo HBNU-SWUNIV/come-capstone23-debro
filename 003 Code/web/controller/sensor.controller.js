@@ -11,7 +11,6 @@ exports.create = (req, res) => {
         humidity: req.body.humidity,
         temperature: req.body.temperature,
         moisture: req.body.moisture,
-        ph: req.body.ph,
     });
 
     Sensor.create(sensor, (err, data) => {

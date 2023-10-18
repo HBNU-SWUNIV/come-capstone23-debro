@@ -4,7 +4,6 @@ const Sensor = function (sensor) {
     this.humidity = sensor.humidity;
     this.temperature = sensor.temperature;
     this.moisture = sensor.moisture;
-    this.ph = sensor.ph;
 };
 
 Sensor.create = (newSensor, result) => {
