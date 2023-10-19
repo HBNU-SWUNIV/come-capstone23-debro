@@ -27,6 +27,11 @@ class MainVC: UIViewController {
     var plant3_birthDate: String = ""
     var plant4_birthDate: String = ""
     
+    var precipitationType: String?
+    var humidity: String?   // 습도
+    var rainfall: String?   // 1시간 강수량
+    var temperature: String? // 섭씨
+    
     var weatherStr: String = ""
     
     let btnRadiuds: CGFloat = 15
@@ -37,12 +42,25 @@ class MainVC: UIViewController {
     let fakeURL: String = "http://localhost:3000/PlantExist"
     let realURL: String = "http://hyunul.com/plant"
     
+    let weatherURL: String = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst"
+    
+    let encodingKey: String = "J34C6SHxJiFm9sbT0irFGXx3ZdmlMU9OXltCJuDTR4XlFtu%2BXnZkOlJ5EOu13UWgWI%2F%2Fe5WAmpnVT21J3k%2Ftxw%3D%3D"
+    
+    let decodingKey: String = "J34C6SHxJiFm9sbT0irFGXx3ZdmlMU9OXltCJuDTR4XlFtu+XnZkOlJ5EOu13UWgWI//e5WAmpnVT21J3k/txw=="
+    
+    let nx: Int = 66
+    let ny: Int = 101
+    
+    
+    
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var tempDataLabel: UILabel!
     @IBOutlet weak var humiDataLabel: UILabel!
     @IBOutlet weak var rainfallDataLabel: UILabel!
     
     @IBOutlet weak var weatherImageView: UIImageView!
+    
+    
     
     @IBOutlet weak var buttonStackView: UIStackView!
     @IBOutlet weak var buttonEmbedView: UIView!
@@ -66,7 +84,39 @@ class MainVC: UIViewController {
         
     }
     
-    fileprivate func setupUI(){
+    fileprivate func setupaboveUI(){
+        
+        
+        tempDataLabel.text = temperature! + "도"
+        humiDataLabel.text = humidity! + "%"
+        rainfallDataLabel.text = rainfall! + "mm"
+        
+        // 강수형태 0 -없음, 1- 비, 2-비/눈 , 3-눈, 4-소나기, 5-빗방울, 6- 빗방울눈날림, 7- 눈날림
+        switch precipitationType {
+        case "0":
+            weatherImageView.image = UIImage(systemName: "sun.max")
+        case "1":
+            weatherImageView.image = UIImage(systemName: "cloud.rain")
+        case "2":
+            weatherImageView.image = UIImage(systemName: "cloud.sleet.fill")
+        case "3":
+            weatherImageView.image = UIImage(systemName: "cloud.snow")
+        case "4":
+            weatherImageView.image = UIImage(systemName: "cloud.heavyrain.fill")
+        case "5":
+            weatherImageView.image = UIImage(systemName: "cloud.drizzle.fill")
+        case "6":
+            weatherImageView.image = UIImage(systemName: "sun.snow.fill")
+        case "7":
+            weatherImageView.image = UIImage(systemName: "snow")
+        default:
+            weatherImageView.image = nil  // 혹은 기본 이미지를 할당하실 수 있습니다.
+        }
+
+        
+    }
+    
+    fileprivate func setupunderUI(){
         
         setupViewUI()
         setupButtonUI()
@@ -171,6 +221,57 @@ class MainVC: UIViewController {
         
     }
     fileprivate func dataRequest(){
+        
+        
+        //fetchPlanterData()
+        
+        fetchWeatherData()
+    }
+    
+    func addQueryParameters(to url: String, parameters: [String: String]) -> URL? {
+        guard var urlComponents = URLComponents(string: url) else {
+            return nil // 반환 값이 nil이면 입력 URL이 잘못되었음을 의미합니다.
+        }
+        
+        // serviceKey 값의 이중 인코딩을 제거합니다.
+        var fixedParameters = parameters
+        if let serviceKey = parameters["serviceKey"],
+           let decodedServiceKey = serviceKey.removingPercentEncoding {
+            fixedParameters["serviceKey"] = decodedServiceKey
+        }
+        
+        // 순서를 보장하기 위해 URLQueryItem 배열을 수동으로 생성합니다.
+        var queryItems: [URLQueryItem] = []
+        for key in ["serviceKey", "numOfRows", "pageNo", "dataType", "base_date", "base_time", "nx", "ny"] {
+            if let value = fixedParameters[key] {
+                queryItems.append(URLQueryItem(name: key, value: value))
+            }
+        }
+        
+        urlComponents.queryItems = queryItems
+        
+        return urlComponents.url
+    }
+    func addQueryParameters2(to url: String, parameters: [String: String]) -> URL? {
+        var queryItems = [String]()
+        for (key, value) in parameters {
+            if key == "serviceKey" {
+                queryItems.append("\(key)=\(value)")  // serviceKey는 이미 인코딩되어 있으므로 인코딩을 건너뜁니다.
+            } else {
+                guard let encodedValue = value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+                    return nil  // 값 인코딩에 실패하면 nil을 반환합니다.
+                }
+                queryItems.append("\(key)=\(encodedValue)")
+            }
+        }
+        let queryString = queryItems.joined(separator: "&")
+        guard let finalURL = URL(string: "\(url)?\(queryString)") else {
+            return nil  // 최종 URL 구성에 실패하면 nil을 반환합니다.
+        }
+        return finalURL
+    }
+    
+    fileprivate func fetchPlanterData(){
         //let urlString = fakeURL // 이후 realURL 변경
         let urlString = realURL
         
@@ -227,7 +328,7 @@ class MainVC: UIViewController {
                     if let plantDataArray = plantDatas.data {
                         
                         print(#fileID, #function, #line, "- plantDataArray.count == \(plantDataArray.count)")
-   
+                        
                         
                         
                         if plantDataArray.count > 0 {
@@ -263,7 +364,7 @@ class MainVC: UIViewController {
                     
                     DispatchQueue.main.async {
                         // UI 업데이트
-                        self.setupUI() // UI를 업데이트하는 함수 호출
+                        self.setupunderUI() // UI를 업데이트하는 함수 호출
                     }
                 } catch {
                     print("decode error occured!\(error)")
@@ -273,8 +374,146 @@ class MainVC: UIViewController {
             
             
         }.resume()
-        
     }
+    
+    fileprivate func fetchWeatherData() {
+        
+        var newURL: URL?
+        
+        let urlweather = weatherURL
+        
+        let date = Date()  // 현재 날짜와 시간을 가져옵니다.
+        let calendar = Calendar.current  // 달력 인스턴스를 생성합니다.
+        
+        // 현재 시간의 분을 가져옵니다.
+        let currentMinute = calendar.component(.minute, from: date)
+        
+        // 분이 40분 이하인지 확인합니다.
+        var targetHour = calendar.component(.hour, from: date)  // 현재 시간의 시를 가져옵니다.
+        if currentMinute <= 40 {
+            // 분이 40분 이하이면 시간을 1시간 감소시킵니다.
+            targetHour -= 1
+        }
+        
+        // 시간을 1시간 감소시킨 날짜를 생성합니다.
+        let previousHour = calendar.date(bySettingHour: targetHour, minute: 0, second: 0, of: date)!
+        
+        // 날짜 형식 지정자를 생성하고 원하는 형식을 설정합니다.
+        let dateFormatter_date = DateFormatter()
+        dateFormatter_date.dateFormat = "yyyyMMdd"
+        let formattedDate = dateFormatter_date.string(from: date)
+        
+        let dateFormatter_time = DateFormatter()
+        dateFormatter_time.dateFormat = "HHmm"
+        let formattedPreviousHour = dateFormatter_time.string(from: previousHour)
+        
+        
+        print(#fileID, #function, #line, "- formattedDate == \(formattedDate) formattedPreviousHour == \(formattedPreviousHour)")
+        
+        let parameters = ["serviceKey": encodingKey, "numOfRows": "1000","pageNo": "1","dataType": "JSON", "base_date": formattedDate, "base_time": formattedPreviousHour, "nx": String(nx), "ny": String(ny)]
+        
+        newURL = addQueryParameters2(to: urlweather, parameters: parameters)
+        
+        
+        
+        if let url = newURL {
+            print(url)
+        } else {
+            print("Invalid URL")
+        }
+        
+        guard let unwrappedURL = newURL else {
+            print("URL is nil")
+            return  // 또는 다른 오류 처리 코드
+        }
+        
+        print(#fileID, #function, #line, "- unwrappedURL == \(unwrappedURL.absoluteString)")
+        
+        var request = URLRequest(url: unwrappedURL)
+        
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "accept")
+        
+        // 2. urlSession 으로 API를 호출한다
+        
+        
+        // 3. API 호출에 대한 응답을 받는다
+        URLSession.shared.dataTask(with: request) { data, urlResponse, err in
+            
+            print("data: \(data)")
+            if let data = data {
+                let responseString = String(data: data, encoding: .utf8)
+                print("Response data string: \(responseString)")
+            }
+            print("urlResponse: \(urlResponse)")
+            print("err: \(err)")
+            
+            
+            if let error = err {
+                return //completion(.failure(ApiError.unknown(error)))
+            }
+            
+            guard let httpResponse = urlResponse as? HTTPURLResponse else {
+                print("bad status code")
+                return //completion(.failure(ApiError.unknown(nil)))
+            }
+            
+            switch httpResponse.statusCode {
+            case 401:
+                return //completion(.failure(ApiError.unauthorized))
+            case 204:
+                return //completion(.failure(ApiError.noContent))
+                
+            default: print("default")
+            }
+            
+            if !(200...299).contains(httpResponse.statusCode){
+                return //completion(.failure(ApiError.badStatus(code: httpResponse.statusCode)))
+            }
+            
+            
+            if let jsonData = data {
+                // convert data to our swift model
+                do {
+                    let decodedData = try JSONDecoder().decode(BaseWeatherData.self, from: jsonData)
+                    guard let items = decodedData.response?.body?.items?.item else { return }
+                    for item in items {
+                        guard let category = item.category, let obsrValue = item.obsrValue else { continue }
+                        switch category {
+                        case "PTY": // 강수형태 0 -없음, 1- 비, 2-비/눈 , 3-눈, 4-소나기, 5-빗방울, 6- 빗방울눈날림, 7- 눈날림
+                            self.precipitationType = obsrValue
+                            print(#fileID, #function, #line, "- \(obsrValue)")
+                        case "REH": // 습도
+                            self.humidity = obsrValue
+                            print(#fileID, #function, #line, "- \(obsrValue)")
+                        case "RN1": // 1시간 강수량
+                            self.rainfall = obsrValue
+                            print(#fileID, #function, #line, "- \(obsrValue)")
+                        case "T1H": // 기온
+                            self.temperature = obsrValue
+                            print(#fileID, #function, #line, "- \(obsrValue)")
+                        default:
+                            continue
+                        }
+                    }
+                    
+                    DispatchQueue.main.async {
+                        // UI 업데이트
+                        self.setupaboveUI() // UI를 업데이트하는 함수 호출
+
+                        
+                    }
+                } catch {
+                    print("decode error occured!\(error)")
+                }
+                
+            }
+            
+            
+            
+        }.resume()
+    }
+    
     // MARK: - 날씨 이미지 교체
     fileprivate func selectWeather(_ weatherStr: String){
         

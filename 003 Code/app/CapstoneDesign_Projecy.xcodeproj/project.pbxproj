@@ -19,7 +19,6 @@
 		DC7C6CA92A1F424900DDEE03 /* MultipartForm in Frameworks */ = {isa = PBXBuildFile; productRef = DC7C6CA82A1F424900DDEE03 /* MultipartForm */; };
 		DC8130C72A68D96F000AC7A9 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = DC8130C62A68D96F000AC7A9 /* DGCharts */; };
 		DC82F01D2ADE885000C9A094 /* UIRefreshProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC82F01C2ADE885000C9A094 /* UIRefreshProtocol.swift */; };
-		DC82F0212ADE939D00C9A094 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC82F0202ADE939D00C9A094 /* Assets.xcassets */; };
 		DC8388072A0CB91000D51227 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8388062A0CB91000D51227 /* AppDelegate.swift */; };
 		DC8388092A0CB91000D51227 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8388082A0CB91000D51227 /* SceneDelegate.swift */; };
 		DC83880B2A0CB91000D51227 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC83880A2A0CB91000D51227 /* ViewController.swift */; };
@@ -44,6 +43,7 @@
 		DC9120402AA84FD300570EC6 /* PlantCustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC91203F2AA84FD300570EC6 /* PlantCustomButton.swift */; };
 		DC94453A2A975C1000DD2D40 /* AWSS3 in Frameworks */ = {isa = PBXBuildFile; productRef = DC9445392A975C1000DD2D40 /* AWSS3 */; };
 		DCE437912A600AE4000AE7F6 /* ChartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE437902A600AE4000AE7F6 /* ChartVC.swift */; };
+		DCF9C1BE2AE1013400D3901B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCF9C1BD2AE1013400D3901B /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,7 +53,6 @@
 		DC7743AF2ACDD28C002160AA /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DC7743B02ACDD28C002160AA /* ChartViewApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartViewApp.swift; sourceTree = "<group>"; };
 		DC82F01C2ADE885000C9A094 /* UIRefreshProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRefreshProtocol.swift; sourceTree = "<group>"; };
-		DC82F0202ADE939D00C9A094 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC8388032A0CB91000D51227 /* CapstoneDesign_Projecy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CapstoneDesign_Projecy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC8388062A0CB91000D51227 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DC8388082A0CB91000D51227 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -77,6 +76,7 @@
 		DC91203D2AA84F5600570EC6 /* CustomViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewTest.swift; sourceTree = "<group>"; };
 		DC91203F2AA84FD300570EC6 /* PlantCustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantCustomButton.swift; sourceTree = "<group>"; };
 		DCE437902A600AE4000AE7F6 /* ChartVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartVC.swift; sourceTree = "<group>"; };
+		DCF9C1BD2AE1013400D3901B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../../../Desktop/파일/AppIcons/Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,7 +120,6 @@
 		DC82F01F2ADE936200C9A094 /* img */ = {
 			isa = PBXGroup;
 			children = (
-				DC82F0202ADE939D00C9A094 /* Assets.xcassets */,
 			);
 			path = img;
 			sourceTree = "<group>";
@@ -154,6 +153,7 @@
 				DCE437902A600AE4000AE7F6 /* ChartVC.swift */,
 				DC83880C2A0CB91000D51227 /* Main.storyboard */,
 				DC83880F2A0CB91200D51227 /* Assets.xcassets */,
+				DCF9C1BD2AE1013400D3901B /* Assets.xcassets */,
 				DC8D59542A1631FE005C8BFD /* InfoResponse.swift */,
 				DC8388112A0CB91200D51227 /* LaunchScreen.storyboard */,
 				DC8388142A0CB91200D51227 /* Info.plist */,
@@ -289,7 +289,7 @@
 			files = (
 				DC8388132A0CB91200D51227 /* LaunchScreen.storyboard in Resources */,
 				DC8388102A0CB91200D51227 /* Assets.xcassets in Resources */,
-				DC82F0212ADE939D00C9A094 /* Assets.xcassets in Resources */,
+				DCF9C1BE2AE1013400D3901B /* Assets.xcassets in Resources */,
 				DC83880E2A0CB91000D51227 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

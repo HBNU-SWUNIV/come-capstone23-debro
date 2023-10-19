@@ -30,10 +30,192 @@
             filePath = "CapstoneDesign_Projecy/RenewalVC/MainVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
             landmarkName = "MainVC"
             landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "1AB00B1A-ADF3-4E8B-A282-1332BAE6C92A - d46e42b27ceb0923"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CapstoneDesign_Projecy.MainVC.plant4_Button.getter : Swift.Optional&lt;__C.UIButton&gt;"
+                  moduleName = "CapstoneDesign_Projecy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shurikim/come-capstone23-debro/003%20Code/app/CapstoneDesign_Projecy/RenewalVC/MainVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  uuid = "1AB00B1A-ADF3-4E8B-A282-1332BAE6C92A - aa6279c45215592f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CapstoneDesign_Projecy.MainVC.plant4_Button.setter : Swift.Optional&lt;__C.UIButton&gt;"
+                  moduleName = "CapstoneDesign_Projecy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shurikim/come-capstone23-debro/003%20Code/app/CapstoneDesign_Projecy/RenewalVC/MainVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "24">
+               </Location>
+               <Location
+                  uuid = "1AB00B1A-ADF3-4E8B-A282-1332BAE6C92A - 3c39fa4942d65e77"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CapstoneDesign_Projecy.MainVC.plant4_Button.modify : Swift.Optional&lt;__C.UIButton&gt;"
+                  moduleName = "CapstoneDesign_Projecy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shurikim/come-capstone23-debro/003%20Code/app/CapstoneDesign_Projecy/RenewalVC/MainVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
+                  offsetFromSymbolStart = "0">
+               </Location>
+               <Location
+                  uuid = "1AB00B1A-ADF3-4E8B-A282-1332BAE6C92A - ef98aed5321ce5a2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CapstoneDesign_Projecy.MainVC.plant4_Button.modify : Swift.Optional&lt;__C.UIButton&gt; with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "CapstoneDesign_Projecy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shurikim/come-capstone23-debro/003%20Code/app/%3Ccompiler-generated%3E"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "28">
+               </Location>
+               <Location
+                  uuid = "1AB00B1A-ADF3-4E8B-A282-1332BAE6C92A - e1ed7b6df00f9df8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CapstoneDesign_Projecy.MainVC.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; CapstoneDesign_Projecy.MainVC"
+                  moduleName = "CapstoneDesign_Projecy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shurikim/come-capstone23-debro/003%20Code/app/CapstoneDesign_Projecy/RenewalVC/MainVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
+                  offsetFromSymbolStart = "1768">
+               </Location>
+               <Location
+                  uuid = "1AB00B1A-ADF3-4E8B-A282-1332BAE6C92A - 52b2104562a92fbc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CapstoneDesign_Projecy.MainVC.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;CapstoneDesign_Projecy.MainVC&gt;"
+                  moduleName = "CapstoneDesign_Projecy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shurikim/come-capstone23-debro/003%20Code/app/CapstoneDesign_Projecy/RenewalVC/MainVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
+                  offsetFromSymbolStart = "1744">
+               </Location>
+               <Location
+                  uuid = "1AB00B1A-ADF3-4E8B-A282-1332BAE6C92A - e92d90f6c14a805e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CapstoneDesign_Projecy.MainVC.plant1_Button.getter : Swift.Optional&lt;__C.UIButton&gt;"
+                  moduleName = "CapstoneDesign_Projecy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shurikim/come-capstone23-debro/003%20Code/app/CapstoneDesign_Projecy/RenewalVC/MainVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  uuid = "1AB00B1A-ADF3-4E8B-A282-1332BAE6C92A - af21b618b6f4d02a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CapstoneDesign_Projecy.MainVC.plant1_Button.setter : Swift.Optional&lt;__C.UIButton&gt;"
+                  moduleName = "CapstoneDesign_Projecy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shurikim/come-capstone23-debro/003%20Code/app/CapstoneDesign_Projecy/RenewalVC/MainVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "24">
+               </Location>
+               <Location
+                  uuid = "1AB00B1A-ADF3-4E8B-A282-1332BAE6C92A - 3efd088da6b524d7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CapstoneDesign_Projecy.MainVC.plant1_Button.modify : Swift.Optional&lt;__C.UIButton&gt;"
+                  moduleName = "CapstoneDesign_Projecy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shurikim/come-capstone23-debro/003%20Code/app/CapstoneDesign_Projecy/RenewalVC/MainVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "58"
+                  endingLineNumber = "58"
+                  offsetFromSymbolStart = "0">
+               </Location>
+               <Location
+                  uuid = "1AB00B1A-ADF3-4E8B-A282-1332BAE6C92A - ef98aed5321ce5a2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CapstoneDesign_Projecy.MainVC.plant1_Button.modify : Swift.Optional&lt;__C.UIButton&gt; with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "CapstoneDesign_Projecy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shurikim/come-capstone23-debro/003%20Code/app/%3Ccompiler-generated%3E"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "28">
+               </Location>
+               <Location
+                  uuid = "1AB00B1A-ADF3-4E8B-A282-1332BAE6C92A - e1ed7b6df00f9e5b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CapstoneDesign_Projecy.MainVC.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; CapstoneDesign_Projecy.MainVC"
+                  moduleName = "CapstoneDesign_Projecy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shurikim/come-capstone23-debro/003%20Code/app/CapstoneDesign_Projecy/RenewalVC/MainVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "58"
+                  endingLineNumber = "58"
+                  offsetFromSymbolStart = "1876">
+               </Location>
+               <Location
+                  uuid = "1AB00B1A-ADF3-4E8B-A282-1332BAE6C92A - 52b2104562a92c1f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CapstoneDesign_Projecy.MainVC.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;CapstoneDesign_Projecy.MainVC&gt;"
+                  moduleName = "CapstoneDesign_Projecy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shurikim/come-capstone23-debro/003%20Code/app/CapstoneDesign_Projecy/RenewalVC/MainVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "58"
+                  endingLineNumber = "58"
+                  offsetFromSymbolStart = "1852">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -162,33 +162,46 @@ struct PlantData: Codable {
     
 }
 
-//// MARK: - Encode/decode helpers
+// MARK: - WeatherData Struct
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//class JSONNull: Codable, Hashable {
-//
-//    public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
-//        return true
-//    }
-//
-//    public var hashValue: Int {
-//        return 0
-//    }
-//
-//    public init() {}
-//
-//    public required init(from decoder: Decoder) throws {
-//        let container = try decoder.singleValueContainer()
-//        if !container.decodeNil() {
-//            throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
-//        }
-//    }
-//
-//    public func encode(to encoder: Encoder) throws {
-//        var container = encoder.singleValueContainer()
-//        try container.encodeNil()
-//    }
-//}
+//   let baseData = try? JSONDecoder().decode(BaseData.self, from: jsonData)
 
+// MARK: - BaseWeatherData
+struct BaseWeatherData: Codable {
+    let response: Response?
+}
+
+// MARK: - Response
+struct Response: Codable {
+    let header: Header?
+    let body: Body?
+}
+
+// MARK: - Body
+struct Body: Codable {
+    let dataType: String?
+    let items: Items?
+    let pageNo, numOfRows, totalCount: Int?
+}
+
+// MARK: - Items
+struct Items: Codable {
+    let item: [Item]?
+}
+
+// MARK: - Item
+struct Item: Codable {
+    let baseDate, baseTime, category: String?
+    let nx, ny: Int?
+    let obsrValue: String?
+}
+
+// MARK: - Header
+struct Header: Codable {
+    let resultCode, resultMsg: String?
+}
 
 
 // MARK: - Encode/decode helpers
