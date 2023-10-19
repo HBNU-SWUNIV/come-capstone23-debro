@@ -7,38 +7,31 @@
 
 import Charts
 import SwiftUI
-
-// 밑에서 쭉 설명할 Marks에 대해서도 동일한 Postings 데이터 적용
-//struct Posting: Identifiable {
-//  let name: String
-//  let count: Int
-//
-//  var id: String { name }
-//}
-//
-//let postings: [Posting] = [
-//  .init(name: "Green", count: 250),
-//  .init(name: "James", count: 100),
-//  .init(name: "Tony", count: 70)
-//]
-//
-//// 차트 그리기
-//struct ContentView: View {
-//  var body: some View {
-//    Chart {
-//      ForEach(postings) { posting in
-//        RuleMark(
-//          xStart: .value("Posting", posting.count),
-//          xEnd: .value("Posting", posting.count + 20),
-//          y: .value("Name", posting.name)
-//        )
-//      }
-//    }
-//  }
-//}
-
+import Combine
 
 struct ContentView: View {
+    
+    @State private var chartData: [ChartData] = []
+    @State private var cancellable: AnyCancellable?
+
+    func requestData() {
+        let url = URL(string: "YOUR_API_ENDPOINT")!
+
+        cancellable = URLSession.shared.dataTaskPublisher(for: url)
+            .map { $0.data }
+            .decode(type: [ChartData].self, decoder: JSONDecoder())
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished: break
+                case .failure(let error): print("Error: \(error)")
+                }
+            }, receiveValue: { data in
+                self.chartData = data
+            })
+    }
+
+    
     var body: some View {
         VStack {
             // dataRequest 로직 추가
@@ -56,7 +49,6 @@ struct ContentView: View {
                     y: .value("Value", 13.6)
                 )
             }
-            //.frame(width: 300, height: 300)
         }
     }
 }
@@ -69,3 +61,49 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
+
+//import SwiftUI
+//import Combine
+//
+//struct ChartData: Identifiable {
+//    var id = UUID()
+//    var date: String
+//    var value: Double
+//}
+//
+//struct ContentView: View {
+//    @State private var chartData: [ChartData] = []
+//    @State private var cancellable: AnyCancellable?
+//    
+//    var body: some View {
+//        VStack {
+//            ForEach(chartData) { data in
+//                LineMark(
+//                    x: .value("Mount", data.date),
+//                    y: .value("Value", data.value)
+//                )
+//            }
+//        }
+//        .onAppear {
+//            requestData()
+//        }
+//    }
+//    
+//    func requestData() {
+//        let url = URL(string: "YOUR_API_ENDPOINT")!
+//
+//        cancellable = URLSession.shared.dataTaskPublisher(for: url)
+//            .map { $0.data }
+//            .decode(type: [ChartData].self, decoder: JSONDecoder())
+//            .receive(on: DispatchQueue.main)
+//            .sink(receiveCompletion: { completion in
+//                switch completion {
+//                case .finished: break
+//                case .failure(let error): print("Error: \(error)")
+//                }
+//            }, receiveValue: { data in
+//                self.chartData = data
+//            })
+//    }
+//}

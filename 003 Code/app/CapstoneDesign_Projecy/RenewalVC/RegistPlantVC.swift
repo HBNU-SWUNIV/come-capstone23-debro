@@ -70,10 +70,13 @@ class RegistPlantVC: UIViewController, UITextFieldDelegate {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        plantNameTextField.delegate = self
         addressTextField.delegate = self
         
         setUpMenus()
         setUpUI()
+        
+        checkTextFieldsAndUpdateButton()
     }
     
     
@@ -205,8 +208,10 @@ class RegistPlantVC: UIViewController, UITextFieldDelegate {
         addPlantbutton.layer.cornerRadius = viewRadius
         addPlantbutton.clipsToBounds = true
         
+        //addPlantbutton.isEnabled = false
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapOutsideTextField))
-        view.addGestureRecognizer(tapGesture)
+        self.view.addGestureRecognizer(tapGesture)
     }
     
     func displayAlert(with title: String, message: String) {
@@ -236,6 +241,8 @@ class RegistPlantVC: UIViewController, UITextFieldDelegate {
             let popupVC = KakaoAddressVC()
             self.present(popupVC, animated: true, completion: nil)
             
+            
+            
             return false  // 이것은 textField의 편집을 방지하며, 원하면 true로 변경 가능
         }
         
@@ -251,11 +258,32 @@ class RegistPlantVC: UIViewController, UITextFieldDelegate {
         return true
     }
     
+    func checkTextFieldsAndUpdateButton() {
+        if let text1 = plantNameTextField.text, let text2 = addressTextField.text, !text1.trimmingCharacters(in: .whitespaces).isEmpty, !text2.trimmingCharacters(in: .whitespaces).isEmpty {
+                addPlantbutton.isEnabled = true
+            } else {
+                addPlantbutton.isEnabled = false
+            }
+        }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        checkTextFieldsAndUpdateButton()
+    }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // 이 메소드는 텍스트 변경 직후에 호출되므로, 실제 변경을 반영하기 위해 DispatchQueue를 사용
+        DispatchQueue.main.async {
+            self.checkTextFieldsAndUpdateButton()
+        }
+        return true
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()  // 키보드 숨김.
         return true
     }
     
+
     
 }
 

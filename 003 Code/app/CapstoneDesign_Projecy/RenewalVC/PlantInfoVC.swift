@@ -25,6 +25,7 @@ class PlantInfoVC: UIViewController{
     var dayDifference: Int = 0
     var TimeInterval: Double = 1.5
     let viewCornerRadius: CGFloat = 10
+    let btnCornerRadius: CGFloat = 5
     
     let accessKey: String = "AKIAZJGVIYOU6JH5ZN4C"
     let newAccessKey: String = "AKIAZJGVIYOUSHEJSS76"
@@ -44,14 +45,25 @@ class PlantInfoVC: UIViewController{
     @IBOutlet weak var plantPicView: UIView!
     @IBOutlet weak var plantDatePicView: UIView!
     
+    @IBOutlet weak var giveWaterView: UIView!
+    
+    
+    
     @IBOutlet weak var validDatePickerView: UIPickerView!
     @IBOutlet weak var plantNameLabel: UILabel!
     @IBOutlet weak var dayFromBirthDateLabel: UILabel!
     @IBOutlet weak var datatempLabel: UILabel!
     @IBOutlet weak var dataMoisLabel: UILabel!
     @IBOutlet weak var dataHumiLabel: UILabel!
+    
+    @IBOutlet weak var giveWaterLabel: UILabel!
+    
+    
     @IBOutlet weak var plantImageView: UIImageView!
     @IBOutlet weak var deleteButton: UIButton!
+    
+    
+    @IBOutlet weak var giveWaterButton: UIButton!
     
     
     // MARK: - Life Cycle
@@ -155,6 +167,14 @@ class PlantInfoVC: UIViewController{
         present(alertController, animated: true, completion: nil)
         
         
+    }
+    
+    
+    @IBAction func giveWaterButtonTapped(_ sender: UIButton) {
+        
+        print(#fileID, #function, #line, "- giveWaterButtonTapped!")
+        
+        giveWaterRequest()
     }
     
     
@@ -312,6 +332,7 @@ class PlantInfoVC: UIViewController{
                         
                         self.plantNameLabel.text = self.plantName
                         self.dayFromBirthDateLabel.text = "\(self.plantName!)과 함께한지 벌써 \(String(self.dayDifference))일이 지났어요"
+                        self.giveWaterLabel.text = "\(self.plantName!)에게 물을 줄 수 있어요"
                         self.datatempLabel.text = "온도 : " + temperature + "도"
                         self.dataMoisLabel.text = "토양의 습도 :" + moisture
                         self.dataHumiLabel.text = "대기의 습도 :" + humidity
@@ -401,6 +422,16 @@ class PlantInfoVC: UIViewController{
         
         plantDatePicView.layer.cornerRadius = viewCornerRadius
         plantDatePicView.clipsToBounds = true
+        
+        giveWaterView.layer.cornerRadius = viewCornerRadius
+        giveWaterView.clipsToBounds = true
+        
+        giveWaterButton.layer.cornerRadius = btnCornerRadius
+        giveWaterButton.clipsToBounds = true
+        
+        deleteButton.layer.cornerRadius = btnCornerRadius
+        deleteButton.clipsToBounds = true
+        
     }
     
     
@@ -590,7 +621,7 @@ extension PlantInfoVC: UIPickerViewDelegate, UIPickerViewDataSource  {
             transferUtilityConfiguration: tuConf,
             forKey: utilityKey
         )
-        //print("ViewController viewDidLoad")
+    
         print("AWSS3TransferUtility instance: \(AWSS3TransferUtility.default())")
         
         //        let dateFormat = DateFormatter()
@@ -603,5 +634,258 @@ extension PlantInfoVC: UIPickerViewDelegate, UIPickerViewDataSource  {
         print(fileKey)
     }
 }
+extension PlantInfoVC: CocoaMQTTDelegate, CocoaMQTT5Delegate{
+    // self signed delegate
+    func mqttUrlSession(_ mqtt: CocoaMQTT, didReceiveTrust trust: SecTrust, didReceiveChallenge challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void){
+        if (challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust) {
+            
+            let certData = Data(base64Encoded: myCert as String)!
+            
+            if let trust = challenge.protectionSpace.serverTrust,
+               let cert = SecCertificateCreateWithData(nil,  certData as CFData) {
+                let certs = [cert]
+                SecTrustSetAnchorCertificates(trust, certs as CFArray)
+                
+                completionHandler(URLSession.AuthChallengeDisposition.useCredential, URLCredential(trust: trust))
+                return
+            }
+        }
+        
+        completionHandler(URLSession.AuthChallengeDisposition.cancelAuthenticationChallenge, nil)
+        
+    }
+    
+    
+    func mqtt(_ mqtt: CocoaMQTT, didConnectAck ack: CocoaMQTTConnAck) {
+        TRACE("ack: \(ack)")
+        
+        if ack == .accept {
+            mqtt.subscribe("debro/camera", qos: CocoaMQTTQoS.qos1)
+            //            let chatViewController = storyboard?.instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController
+            //            chatViewController?.mqtt = mqtt
+            //            chatViewController?.mqttVersion = mqttVesion
+            //            navigationController!.pushViewController(chatViewController!, animated: true)
+        }
+    }
+    
+    func mqtt(_ mqtt: CocoaMQTT, didStateChangeTo state: CocoaMQTTConnState) {
+        TRACE("new state: \(state)")
+    }
+    
+    func mqtt(_ mqtt: CocoaMQTT, didPublishMessage message: CocoaMQTTMessage, id: UInt16) {
+        TRACE("message: \(message.string.description), id: \(id)")
+    }
+    
+    func mqtt(_ mqtt: CocoaMQTT, didPublishAck id: UInt16) {
+        TRACE("id: \(id)")
+    }
+    
+    func mqtt(_ mqtt: CocoaMQTT, didReceiveMessage message: CocoaMQTTMessage, id: UInt16 ) {
+        TRACE("message: \(message.string.description), id: \(id)")
+        
+        let name = NSNotification.Name(rawValue: "MQTTMessageNotification")
+        NotificationCenter.default.post(name: name, object: self, userInfo: ["message": message.string!, "topic": message.topic, "id": id])
+    }
+    
+    func mqtt(_ mqtt: CocoaMQTT, didSubscribeTopics success: NSDictionary, failed: [String]) {
+        TRACE("subscribed: \(success), failed: \(failed)")
+    }
+    
+    func mqtt(_ mqtt: CocoaMQTT, didUnsubscribeTopics topics: [String]) {
+        TRACE("topic: \(topics)")
+    }
+    
+    func mqttDidPing(_ mqtt: CocoaMQTT) {
+        TRACE()
+    }
+    
+    func mqttDidReceivePong(_ mqtt: CocoaMQTT) {
+        TRACE()
+    }
+    
+    func mqttDidDisconnect(_ mqtt: CocoaMQTT, withError err: Error?) {
+        TRACE("\(err.description)")
+    }
+    
+    func mqtt5(_ mqtt5: CocoaMQTT5, didReceiveDisconnectReasonCode reasonCode: CocoaMQTTDISCONNECTReasonCode) {
+        print("disconnect res : \(reasonCode)")
+    }
+    
+    func mqtt5(_ mqtt5: CocoaMQTT5, didReceiveAuthReasonCode reasonCode: CocoaMQTTAUTHReasonCode) {
+        print("auth res : \(reasonCode)")
+    }
+    
+    // Optional ssl CocoaMQTT5Delegate
+    func mqtt5(_ mqtt5: CocoaMQTT5, didReceive trust: SecTrust, completionHandler: @escaping (Bool) -> Void) {
+        TRACE("trust: \(trust)")
+        /// Validate the server certificate
+        ///
+        /// Some custom validation...
+        ///
+        /// if validatePassed {
+        ///     completionHandler(true)
+        /// } else {
+        ///     completionHandler(false)
+        /// }
+        completionHandler(true)
+    }
+    
+    func mqtt5(_ mqtt5: CocoaMQTT5, didConnectAck ack: CocoaMQTTCONNACKReasonCode, connAckData: MqttDecodeConnAck?) {
+        TRACE("ack: \(ack)")
+        
+        if ack == .success {
+            if(connAckData != nil){
+                print("properties maximumPacketSize: \(String(describing: connAckData!.maximumPacketSize))")
+                print("properties topicAliasMaximum: \(String(describing: connAckData!.topicAliasMaximum))")
+            }
+            
+            mqtt5.subscribe("debro/water", qos: CocoaMQTTQoS.qos1)
 
+            
+        }
+    }
+    
+    func mqtt5(_ mqtt5: CocoaMQTT5, didStateChangeTo state: CocoaMQTTConnState) {
+        TRACE("new state: \(state)")
+        if state == .disconnected {
+            
+        }
+    }
+    
+    func mqtt5(_ mqtt5: CocoaMQTT5, didPublishMessage message: CocoaMQTT5Message, id: UInt16) {
+        TRACE("message: \(message.description), id: \(id)")
+    }
+    
+    func mqtt5(_ mqtt5: CocoaMQTT5, didPublishAck id: UInt16, pubAckData: MqttDecodePubAck?) {
+        TRACE("id: \(id)")
+        if(pubAckData != nil){
+            print("pubAckData reasonCode: \(String(describing: pubAckData!.reasonCode))")
+        }
+    }
+    
+    func mqtt5(_ mqtt5: CocoaMQTT5, didPublishRec id: UInt16, pubRecData: MqttDecodePubRec?) {
+        TRACE("id: \(id)")
+        if(pubRecData != nil){
+            print("pubRecData reasonCode: \(String(describing: pubRecData!.reasonCode))")
+        }
+    }
+    
+    func mqtt5(_ mqtt5: CocoaMQTT5, didPublishComplete id: UInt16,  pubCompData: MqttDecodePubComp?){
+        TRACE("id: \(id)")
+        if(pubCompData != nil){
+            print("pubCompData reasonCode: \(String(describing: pubCompData!.reasonCode))")
+        }
+    }
+    
+    func mqtt5(_ mqtt5: CocoaMQTT5, didReceiveMessage message: CocoaMQTT5Message, id: UInt16, publishData: MqttDecodePublish?){
+        if(publishData != nil){
+            print("publish.contentType \(String(describing: publishData!.contentType))")
+        }
+        
+        TRACE("message: \(message.string.description), id: \(id)")
+        let name = NSNotification.Name(rawValue: "MQTTMessageNotification")
+        
+        NotificationCenter.default.post(name: name, object: self, userInfo: ["message": message.string!, "topic": message.topic, "id": id])
+    }
+    
+    func mqtt5(_ mqtt5: CocoaMQTT5, didSubscribeTopics success: NSDictionary, failed: [String], subAckData: MqttDecodeSubAck?) {
+        TRACE("subscribed: \(success), failed: \(failed)")
+        if(subAckData != nil){
+            print("subAckData.reasonCodes \(String(describing: subAckData!.reasonCodes))")
+        }
+    }
+    
+    func mqtt5(_ mqtt5: CocoaMQTT5, didUnsubscribeTopics topics: [String], unsubAckData: MqttDecodeUnsubAck?) {
+        TRACE("topic: \(topics)")
+        if(unsubAckData != nil){
+            print("unsubAckData.reasonCodes \(String(describing: unsubAckData!.reasonCodes))")
+        }
+        print("----------------------")
+    }
+    
+    func mqtt5DidPing(_ mqtt5: CocoaMQTT5) {
+        TRACE()
+    }
+    
+    func mqtt5DidReceivePong(_ mqtt5: CocoaMQTT5) {
+        TRACE()
+    }
+    
+    func mqtt5DidDisconnect(_ mqtt5: CocoaMQTT5, withError err: Error?) {
+        TRACE("\(err.description)")
+        let name = NSNotification.Name(rawValue: "MQTTMessageNotificationDisconnect")
+        NotificationCenter.default.post(name: name, object: nil)
+    }
+    
+    func giveWaterRequest() {
+        var formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        let clientID = "CocoaMQTT5-" + String(ProcessInfo().processIdentifier)
+        let mqtt5 = CocoaMQTT5(clientID: clientID, host: "58.233.72.16", port: 2883)
+        mqtt5.logLevel = .debug
+        let connectProperties = MqttConnectProperties()
+        connectProperties.topicAliasMaximum = 0
+        connectProperties.sessionExpiryInterval = 0
+        connectProperties.receiveMaximum = 100
+        connectProperties.maximumPacketSize = 500
+        
+        mqtt5.connectProperties = connectProperties
+        mqtt5.username = "Mac Test"
+        mqtt5.password = "Test1"
+        
+        let lastWillMessage = CocoaMQTT5Message(topic: "debro/water", string: "did disconnect")
+        //lastWillMessage.contentType = "JSON"
+        lastWillMessage.willResponseTopic = "debro/water"
+        lastWillMessage.willExpiryInterval = .max
+        lastWillMessage.willDelayInterval = 0
+        lastWillMessage.qos = .qos1
+        mqtt5.willMessage = lastWillMessage
+        
+        
+        mqtt5.keepAlive = 60
+        mqtt5.delegate = self
+        let success = mqtt5.connect()
+        
+        if success {
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+                var current_date_string = formatter.string(from: Date())
+                //var current_date_string = formatter.string(from: Date())
+                print(current_date_string)
+                mqtt5.publish("debro/water", withString: "run water " + current_date_string , qos: .qos1, DUP: true, retained: false, properties: .init())
+            }
+            
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+                mqtt5.disconnect()
+            }
+        } else {
+            print("MQTT Connection did not Connected!!")
+        }
+
+        
+        
+        
+    }
+    
+    
+}
+extension PlantInfoVC {
+    func TRACE(_ message: String = "", fun: String = #function) {
+        let names = fun.components(separatedBy: ":")
+        var prettyName: String
+        if names.count == 2 {
+            prettyName = names[0]
+        } else {
+            prettyName = names[1]
+        }
+        
+        if fun == "mqttDidDisconnect(_:withError:)" {
+            prettyName = "didDisconnect"
+        }
+        
+        print("[TRACE] [\(prettyName)]: \(message)")
+    }
+}
 

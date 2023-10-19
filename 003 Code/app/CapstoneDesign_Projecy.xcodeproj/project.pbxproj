@@ -10,6 +10,7 @@
 		DC5CE08E2A9F39EA00F1D913 /* CocoaMQTT in Frameworks */ = {isa = PBXBuildFile; productRef = DC5CE08D2A9F39EA00F1D913 /* CocoaMQTT */; };
 		DC5CE0902A9F39EA00F1D913 /* CocoaMQTTWebSocket in Frameworks */ = {isa = PBXBuildFile; productRef = DC5CE08F2A9F39EA00F1D913 /* CocoaMQTTWebSocket */; };
 		DC7290372AA866F100167266 /* LoginVC_onlycode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7290362AA866F100167266 /* LoginVC_onlycode.swift */; };
+		DC72F4AA2AE001B60029D191 /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC72F4A92AE001B60029D191 /* ChartData.swift */; };
 		DC74DBEC2A8E18510049F4A1 /* MQTTNIO in Frameworks */ = {isa = PBXBuildFile; productRef = DC74DBEB2A8E18510049F4A1 /* MQTTNIO */; };
 		DC76A6E52AA0896100A27A96 /* SotoS3 in Frameworks */ = {isa = PBXBuildFile; productRef = DC76A6E42AA0896100A27A96 /* SotoS3 */; };
 		DC7736562AD7CCB6008CF2C9 /* KakaoAddressVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7736552AD7CCB6008CF2C9 /* KakaoAddressVC.swift */; };
@@ -47,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		DC7290362AA866F100167266 /* LoginVC_onlycode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC_onlycode.swift; sourceTree = "<group>"; };
+		DC72F4A92AE001B60029D191 /* ChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartData.swift; sourceTree = "<group>"; };
 		DC7736552AD7CCB6008CF2C9 /* KakaoAddressVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAddressVC.swift; sourceTree = "<group>"; };
 		DC7743AF2ACDD28C002160AA /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DC7743B02ACDD28C002160AA /* ChartViewApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartViewApp.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 			children = (
 				DC7743B02ACDD28C002160AA /* ChartViewApp.swift */,
 				DC7743AF2ACDD28C002160AA /* ContentView.swift */,
+				DC72F4A92AE001B60029D191 /* ChartData.swift */,
 			);
 			path = ChartView;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 				DC8D59532A161FD8005C8BFD /* UserInfo.swift in Sources */,
 				DC8D59552A1631FE005C8BFD /* InfoResponse.swift in Sources */,
 				DC9120402AA84FD300570EC6 /* PlantCustomButton.swift in Sources */,
+				DC72F4AA2AE001B60029D191 /* ChartData.swift in Sources */,
 				DC8388212A0CCD4A00D51227 /* CameraVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

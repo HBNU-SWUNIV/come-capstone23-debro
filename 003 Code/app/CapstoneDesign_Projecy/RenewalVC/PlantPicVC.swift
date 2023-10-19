@@ -161,7 +161,9 @@ class PlantPicVC: UIViewController {
     
     @IBAction func takePicButtonTapped(_ sender: UIButton) {
         print("takePicButtonTapped!")
+        var formatter = DateFormatter()
         
+        takePicRequest()
         
     }
     
@@ -351,7 +353,7 @@ class PlantPicVC: UIViewController {
     }
     
 }
-extension PlantPicVC: CocoaMQTTDelegate{
+extension PlantPicVC: CocoaMQTTDelegate, CocoaMQTT5Delegate{
     // self signed delegate
     func mqttUrlSession(_ mqtt: CocoaMQTT, didReceiveTrust trust: SecTrust, didReceiveChallenge challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void){
         if (challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust) {
@@ -457,14 +459,7 @@ extension PlantPicVC: CocoaMQTTDelegate{
             }
             
             mqtt5.subscribe("debro/camera", qos: CocoaMQTTQoS.qos1)
-            //or
-            //let subscriptions : [MqttSubscription] = [MqttSubscription(topic: "chat/room/animals/client/+"),MqttSubscription(topic: "chat/room/foods/client/+"),MqttSubscription(topic: "chat/room/trees/client/+")]
-            //mqtt.subscribe(subscriptions)
-            
-            //            let chatViewController = storyboard?.instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController
-            //            chatViewController?.mqtt5 = mqtt5
-            //            chatViewController?.mqttVersion = mqttVesion
-            //            navigationController!.pushViewController(chatViewController!, animated: true)
+
             
         }
     }
@@ -539,6 +534,56 @@ extension PlantPicVC: CocoaMQTTDelegate{
         TRACE("\(err.description)")
         let name = NSNotification.Name(rawValue: "MQTTMessageNotificationDisconnect")
         NotificationCenter.default.post(name: name, object: nil)
+    }
+    
+    func takePicRequest(){
+        var formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        let clientID = "CocoaMQTT5-" + String(ProcessInfo().processIdentifier)
+        let mqtt5 = CocoaMQTT5(clientID: clientID, host: "58.233.72.16", port: 2883)
+        mqtt5.logLevel = .debug
+        let connectProperties = MqttConnectProperties()
+        connectProperties.topicAliasMaximum = 0
+        connectProperties.sessionExpiryInterval = 0
+        connectProperties.receiveMaximum = 100
+        connectProperties.maximumPacketSize = 500
+        
+        mqtt5.connectProperties = connectProperties
+        mqtt5.username = "Mac Test"
+        mqtt5.password = "Test1"
+        
+        let lastWillMessage = CocoaMQTT5Message(topic: "debro/camera", string: "did disconnected")
+        //lastWillMessage.contentType = "JSON"
+        lastWillMessage.willResponseTopic = "debro/camera"
+        lastWillMessage.willExpiryInterval = .max
+        lastWillMessage.willDelayInterval = 0
+        lastWillMessage.qos = .qos1
+        mqtt5.willMessage = lastWillMessage
+        
+        mqtt5.keepAlive = 60
+        mqtt5.delegate = self
+        //mqtt5.connect()
+        let success = mqtt5.connect()
+        
+        if success {
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+                var current_date_string = formatter.string(from: Date())
+                //var current_date_string = formatter.string(from: Date())
+                print(current_date_string)
+                mqtt5.publish("debro/camera", withString: "run camera " + current_date_string , qos: .qos1, DUP: true, retained: false, properties: .init())
+            }
+            
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+                mqtt5.disconnect()
+            }
+        } else {
+            print("MQTT Connection did not Connected!!")
+        }
+        
+        
     }
     
 }
