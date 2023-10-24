@@ -27,6 +27,9 @@ class PlantPicVC: UIViewController {
     var selectedDate: String?
     var recentPictDate: String?
     var dayDifference: Int = 0
+    var fileName: String?
+    
+    weak var delegate: ViewControllerDelegate_completion?
     
     let accessKey: String = "AKIAZJGVIYOU6JH5ZN4C"
     let newAccessKey: String = "AKIAZJGVIYOUSHEJSS76"
@@ -34,7 +37,7 @@ class PlantPicVC: UIViewController {
     let newSecretKey: String = "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"
     let s3BucketName = "capston-bucket"
     let s3ObjectKey = "image_20230907_205731.jpg"
-    let utilityKey = "utility-key2"
+    let utilityKey = "utility-key" + String(arc4random())
     var fileKey = "plant_image/"
     let viewCornerRadius: CGFloat = 10
     
@@ -59,6 +62,9 @@ class PlantPicVC: UIViewController {
         super.viewDidLoad()
         print("PlantPicVC viewDidLoad!!")
         recentPictDate = "2023-10-11" // 테스트
+        
+        modifyDateformat()
+        
         setUpAWSS3()
         //requestimage() // <- 사진 다른거 땡겨오는 로직 추가할 것
         calculatedifDate()
@@ -69,9 +75,9 @@ class PlantPicVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         print("PlantViewController Will be Appeared!")
         
-        if checkIfFileURLExists(){
+        if checkIfFileURLValids(){
             
-            if let savedURL = UserDefaults.standard.url(forKey: "picFilePath2") {
+            if let savedURL = UserDefaults.standard.url(forKey: "picFilePath3") {
                 self.picFileURL = savedURL
             }
             
@@ -105,8 +111,13 @@ class PlantPicVC: UIViewController {
     
     
     @IBAction func backButtonTapped(_ sender: Any) {
+
         print("backButtonTapped!")
-        self.dismiss(animated: true)
+
+            delegate?.refreshUIOnViewController {
+            
+                self.dismiss(animated: true)
+            }
     }
     
     @IBAction func saveButtonTapped(_ sender: UIButton) {
@@ -211,9 +222,40 @@ class PlantPicVC: UIViewController {
         }
     }
     
+    func modifyDateformat() {
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "yy.MM.dd_HH시mm분ss초"
+        inputFormatter.locale = Locale(identifier: "ko_KR")
+        
+        // 문자열을 Date 타입으로 변환
+        guard let date = inputFormatter.date(from: selectedDate!) else {
+            print("Date parsing failed")
+            return
+        }
+        
+        // 첫 번째 포맷으로 변환 (yyyyMMdd_HHmmss)
+        let outputFormatter1 = DateFormatter()
+        outputFormatter1.dateFormat = "yyyyMMdd_HHmmss"
+
+        fileKey += "image_" + outputFormatter1.string(from: date) + ".jpg"
+        fileName = "image_" + outputFormatter1.string(from: date) + ".jpg"
+        print(#fileID, #function, #line, "- filekey == \(fileKey)")
+        //let formattedString1 = outputFormatter1.string(from: date)
+        
+        // 두 번째 포맷으로 변환 (yyyy년 MM월 dd일 HH시 mm분 ss초)
+        let outputFormatter2 = DateFormatter()
+        outputFormatter2.dateFormat = "yyyy년 MM월 dd일 HH시 mm분 ss초"
+        
+        selectedDate = outputFormatter2.string(from: date)
+        print(#fileID, #function, #line, "- selectedDate == \(selectedDate)")
+        let formattedString2 = outputFormatter2.string(from: date)
+        
+    }
+    
+    
     func changeLabelText(){
         detailMainLabel.text = (plantName ?? "nil") + "의 모습"
-        detailDesLabel.text = (selectedDate ?? "") + "당시의 모습이에요"
+        detailDesLabel.text = (selectedDate ?? "")
     }
             
     func requestimage(){
@@ -269,13 +311,15 @@ class PlantPicVC: UIViewController {
                         let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
                         
                         
-                        let fileURL = documentsURL.appendingPathComponent("test_image2.jpg")
+                        //let fileURL = documentsURL.appendingPathComponent("test_image2.jpg")
+                        let fileURL = documentsURL.appendingPathComponent(self?.fileName ?? "test_image2.jpg")
+                    
                         
                         self?.picFileURL = fileURL
                         
                         print(#fileID, #function, #line, "- self.picFileURL == \(String(describing: self?.picFileURL))")
                         
-                        UserDefaults.standard.set(fileURL, forKey: "picFilePath2")
+                        UserDefaults.standard.set(fileURL, forKey: "picFilePath3")
                         
                         print("File saved at: \(fileURL.absoluteString)")
                         try? imagedata.write(to: fileURL)
@@ -315,16 +359,36 @@ class PlantPicVC: UIViewController {
         
     }
     
-    func checkIfFileURLExists() -> Bool {
-        if let savedPath = UserDefaults.standard.string(forKey: "picFilePath2") {
+//    func checkIfFileURLExists() -> Bool {
+//        if let savedPath = UserDefaults.standard.string(forKey: "picFilePath3") {
+//            self.picFileURL = URL(fileURLWithPath: savedPath)
+//            print("FileURL Exist! : \(String(describing: self.picFileURL?.absoluteString))")
+//            return true
+//        } else {
+//            print("FileURL doesn't Exist!")
+//            return false
+//        }
+//    }
+    
+    func checkIfFileURLValids() -> Bool {
+        if let savedPath = UserDefaults.standard.string(forKey: "picFilePath3") {
             self.picFileURL = URL(fileURLWithPath: savedPath)
-            print("FileURL Exist! : \(String(describing: self.picFileURL?.absoluteString))")
-            return true
+            let savedFileName = self.picFileURL?.lastPathComponent
+            print("Saved File Name: \(String(describing: savedFileName))")
+
+            if savedFileName == fileName! {
+                print("FileURL Exist and matches the file name! : \(String(describing: self.picFileURL?.absoluteString))")
+                return true
+            } else {
+                print("FileURL exists but does not match the file name!")
+                return false
+            }
         } else {
             print("FileURL doesn't Exist!")
             return false
         }
     }
+
     
     func setUpAWSS3(){
         // aws s3 설정
@@ -347,9 +411,9 @@ class PlantPicVC: UIViewController {
         //print("ViewController viewDidLoad")
         print("AWSS3TransferUtility instance: \(AWSS3TransferUtility.default())")
   
-        fileKey += "image_20230830_201810.jpg"
+        //fileKey += "image_20230830_201810.jpg"
         
-        print(fileKey)
+        //print(fileKey)
     }
     
 }
@@ -558,7 +622,7 @@ extension PlantPicVC: CocoaMQTTDelegate, CocoaMQTT5Delegate{
         lastWillMessage.willResponseTopic = "debro/camera"
         lastWillMessage.willExpiryInterval = .max
         lastWillMessage.willDelayInterval = 0
-        lastWillMessage.qos = .qos1
+        lastWillMessage.qos = .qos2
         mqtt5.willMessage = lastWillMessage
         
         mqtt5.keepAlive = 60
@@ -572,12 +636,13 @@ extension PlantPicVC: CocoaMQTTDelegate, CocoaMQTT5Delegate{
                 var current_date_string = formatter.string(from: Date())
                 //var current_date_string = formatter.string(from: Date())
                 print(current_date_string)
-                mqtt5.publish("debro/camera", withString: "run camera " + current_date_string , qos: .qos1, DUP: true, retained: false, properties: .init())
+//                mqtt5.publish("debro/camera", withString: "run camera " + current_date_string , qos: .qos1, DUP: true, retained: false, properties: .init())
+                mqtt5.publish("debro/camera", withString: "run camera" , qos: .qos1, DUP: true, retained: false, properties: .init())
             }
             
             
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-                mqtt5.disconnect()
+                //mqtt5.disconnect()
             }
         } else {
             print("MQTT Connection did not Connected!!")
@@ -604,3 +669,5 @@ extension PlantPicVC {
         print("[TRACE] [\(prettyName)]: \(message)")
     }
 }
+
+

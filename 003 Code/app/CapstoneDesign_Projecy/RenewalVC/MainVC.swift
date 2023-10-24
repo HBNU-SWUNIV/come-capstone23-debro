@@ -218,12 +218,12 @@ class MainVC: UIViewController {
             button.addTarget(self, action: #selector(registPlant), for: .touchUpInside)
         }
         
-        
+        // 둔산로 201
     }
     fileprivate func dataRequest(){
         
         
-        //fetchPlanterData()
+        fetchPlanterData()
         
         fetchWeatherData()
     }
@@ -256,7 +256,7 @@ class MainVC: UIViewController {
         var queryItems = [String]()
         for (key, value) in parameters {
             if key == "serviceKey" {
-                queryItems.append("\(key)=\(value)")  // serviceKey는 이미 인코딩되어 있으므로 인코딩을 건너뜁니다.
+                queryItems.append("\(key)=\(value)") 
             } else {
                 guard let encodedValue = value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
                     return nil  // 값 인코딩에 실패하면 nil을 반환합니다.
@@ -382,30 +382,55 @@ class MainVC: UIViewController {
         
         let urlweather = weatherURL
         
+//        let date = Date()  // 현재 날짜와 시간을 가져옵니다.
+//        let calendar = Calendar.current  // 달력 인스턴스를 생성합니다.
+//        
+//        // 현재 시간의 분을 가져옵니다.
+//        let currentMinute = calendar.component(.minute, from: date)
+//        
+//        // 분이 40분 이하인지 확인합니다.
+//        var targetHour = calendar.component(.hour, from: date)  // 현재 시간의 시를 가져옵니다.
+//        if currentMinute <= 40 {
+//            // 분이 40분 이하이면 시간을 1시간 감소시킵니다.
+//            targetHour -= 1
+//        }
+//        
+//        // 시간을 1시간 감소시킨 날짜를 생성합니다.
+//        let previousHour = calendar.date(bySettingHour: targetHour, minute: 0, second: 0, of: date)!
+//        
+//        // 날짜 형식 지정자를 생성하고 원하는 형식을 설정합니다.
+//        let dateFormatter_date = DateFormatter()
+//        dateFormatter_date.dateFormat = "yyyyMMdd"
+//        let formattedDate = dateFormatter_date.string(from: date)
+//        
+//        let dateFormatter_time = DateFormatter()
+//        dateFormatter_time.dateFormat = "HHmm"
+//        let formattedPreviousHour = dateFormatter_time.string(from: previousHour)
+        
         let date = Date()  // 현재 날짜와 시간을 가져옵니다.
         let calendar = Calendar.current  // 달력 인스턴스를 생성합니다.
-        
+
         // 현재 시간의 분을 가져옵니다.
         let currentMinute = calendar.component(.minute, from: date)
-        
+
         // 분이 40분 이하인지 확인합니다.
-        var targetHour = calendar.component(.hour, from: date)  // 현재 시간의 시를 가져옵니다.
+        var targetDate = date  // 현재 날짜와 시간을 대상 날짜로 설정합니다.
         if currentMinute <= 40 {
             // 분이 40분 이하이면 시간을 1시간 감소시킵니다.
-            targetHour -= 1
+            if let newDate = calendar.date(byAdding: .hour, value: -1, to: date) {
+                targetDate = newDate
+            }
         }
-        
-        // 시간을 1시간 감소시킨 날짜를 생성합니다.
-        let previousHour = calendar.date(bySettingHour: targetHour, minute: 0, second: 0, of: date)!
-        
+
         // 날짜 형식 지정자를 생성하고 원하는 형식을 설정합니다.
         let dateFormatter_date = DateFormatter()
         dateFormatter_date.dateFormat = "yyyyMMdd"
-        let formattedDate = dateFormatter_date.string(from: date)
-        
+        let formattedDate = dateFormatter_date.string(from: targetDate)
+
         let dateFormatter_time = DateFormatter()
         dateFormatter_time.dateFormat = "HHmm"
-        let formattedPreviousHour = dateFormatter_time.string(from: previousHour)
+        let formattedPreviousHour = dateFormatter_time.string(from: targetDate)
+
         
         
         print(#fileID, #function, #line, "- formattedDate == \(formattedDate) formattedPreviousHour == \(formattedPreviousHour)")

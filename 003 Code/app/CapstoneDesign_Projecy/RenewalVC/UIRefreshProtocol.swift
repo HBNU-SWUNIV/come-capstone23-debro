@@ -9,3 +9,6 @@ import Foundation
 protocol ViewControllerDelegate: AnyObject {
     func refreshUIOnViewController()
 }
+protocol ViewControllerDelegate_completion: AnyObject {
+    func refreshUIOnViewController(completion: @escaping () -> Void)
+}

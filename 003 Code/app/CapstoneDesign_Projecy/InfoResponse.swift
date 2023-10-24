@@ -202,6 +202,8 @@ struct Item: Codable {
 struct Header: Codable {
     let resultCode, resultMsg: String?
 }
+// MARK: - imageList
+typealias ImageList = [String]
 
 
 // MARK: - Encode/decode helpers

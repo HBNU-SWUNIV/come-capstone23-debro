@@ -33,21 +33,33 @@ struct ContentView: View {
 
     
     var body: some View {
-        VStack {
-            // dataRequest 로직 추가
-            Chart {
-                LineMark(
-                    x: .value("Mount", "9월 7일"),
-                    y: .value("Value", 3.4)
-                )
-                LineMark(
-                    x: .value("Mount", "9월 14일"),
-                    y: .value("Value", 7.1)
-                )
-                LineMark(
-                    x: .value("Mount", "9월 21일"),
-                    y: .value("Value", 13.6)
-                )
+        HStack(alignment: .top) {
+            Text("cm")
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .offset(y: 6)
+            VStack {
+                // dataRequest 로직 추가
+                Chart {
+                    LineMark(
+                        x: .value("Mount", "9월 7일"),
+                        y: .value("Value", 3.4)
+                    )
+                    LineMark(
+                        x: .value("Mount", "9월 14일"),
+                        y: .value("Value", 7.1)
+                    )
+                    LineMark(
+                        x: .value("Mount", "9월 21일"),
+                        y: .value("Value", 13.6)
+                    )
+                }.chartYAxis {
+                    AxisMarks(values: .stride(by: 4)) { value in
+                        AxisGridLine()
+                        AxisTick()
+                        AxisValueLabel()
+                    }
+                }
             }
         }
     }

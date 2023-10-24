@@ -13,14 +13,19 @@ import AWSS3
 import CocoaMQTT
 import CocoaMQTTWebSocket
 
-class PlantInfoVC: UIViewController{
+class PlantInfoVC: UIViewController, ViewControllerDelegate_completion{
     
-
+    
+    
+    
     // MARK: - variables
-    let validDates: [String] = ["2023-10-01", "2023-10-05", "2023-10-12", "2023-10-20"] // 유효한 날짜 문자열 목록
+    //let validDates: [String] = ["2023-10-01", "2023-10-05", "2023-10-12", "2023-10-20"] // 유효한 날짜 문자열 목록
+    var validDates: [String] = []
+    var validDates_pickerData: [String] = []
     //var userName: String?
     var plantName: String?
     var birthDate: String?
+    var fileName: String?
     var plant_number: Int?
     var dayDifference: Int = 0
     var TimeInterval: Double = 1.5
@@ -28,13 +33,20 @@ class PlantInfoVC: UIViewController{
     let btnCornerRadius: CGFloat = 5
     
     let accessKey: String = "AKIAZJGVIYOU6JH5ZN4C"
-    let newAccessKey: String = "AKIAZJGVIYOUSHEJSS76"
+    
     let secretKey: String = "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"
+    
+    let newAccessKey: String = "AKIAZJGVIYOUSHEJSS76"
     let newSecretKey: String = "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"
+    
+    let realstrURL: String = "http://hyunul.com/"
+    
+    
     let s3BucketName = "capston-bucket"
     let s3ObjectKey = "image_20230907_205731.jpg"
-    let utilityKey = "utility-key"
+    let utilityKey = "utility-key" + String(arc4random())
     var fileKey = "plant_image/"
+    var filelistkey = "plant_image/"
     
     var picFileURL: URL?
     
@@ -73,9 +85,12 @@ class PlantInfoVC: UIViewController{
         validDatePickerView.delegate = self
         validDatePickerView.dataSource = self
         
+        getImageList {
+            self.setUpAWSS3()
+        }
         
         print("PlantName: \(plantName!), birthDate: \(birthDate!)")
-        setUpAWSS3()
+        //setUpAWSS3()
         
         dataRequest()
         setUpUI()
@@ -87,41 +102,13 @@ class PlantInfoVC: UIViewController{
     override func viewWillAppear(_ animated: Bool) {
         print("PlantViewController Will be Appeared!")
         
-        if checkIfFileURLExists(){
-            
-            if let savedURL = UserDefaults.standard.url(forKey: "picFilePath") {
-                self.picFileURL = savedURL
-            }
-            
-            do {
-                //let imageData = try Data(contentsOf: picFileURL)
-                guard let unwrappedURL = picFileURL else {
-                    print("picFileURL is nil")
-                    return
-                }
-                let imageData = try? Data(contentsOf: unwrappedURL)
-                
-                guard let unwrappedImageData = imageData else {
-                    print("unwrappedImageData is nil")
-                    return
-                }
-                DispatchQueue.main.async {
-                    let image = UIImage(data: unwrappedImageData)
-                    self.plantImageView.image = image
-                }
-                
-            } catch {
-                print("Error loading image : \(error)")
-            }
-        } else {
-            requestimage()
-        }
-        
-        
+        insertImage() // 이후 requestimage() 실행
+
         
     }
     override func viewDidAppear(_ animated: Bool) {
         print("PlantViewController Appeared!")
+    
         
         print("imageView:\(String(describing: plantImageView.image?.scale))")
         
@@ -180,6 +167,41 @@ class PlantInfoVC: UIViewController{
     
     // MARK: - function
     
+    func insertImage(){
+        if checkIfFileURLValids(){
+            
+            if let savedURL = UserDefaults.standard.url(forKey: "recpicFilePath") {
+                self.picFileURL = savedURL
+                print(#fileID, #function, #line, "- savedURL - \(savedURL)")
+            }
+            
+            do {
+                //let imageData = try Data(contentsOf: picFileURL)
+                guard let unwrappedURL = picFileURL else {
+                    print("picFileURL is nil")
+                    return
+                }
+                let imageData = try? Data(contentsOf: unwrappedURL)
+                
+                guard let unwrappedImageData = imageData else {
+                    print("unwrappedImageData is nil")
+                    return
+                }
+                DispatchQueue.main.async {
+                    let image = UIImage(data: unwrappedImageData)
+                    self.plantImageView.image = image
+                }
+                
+            } catch {
+                print("Error loading image : \(error)")
+            }
+        } else {
+            requestimage()
+        }
+        
+        
+    }
+    
     fileprivate func dataDelete(){
         
         guard let url = generateURL(base: "http://hyunul.com/plant/"+String(plant_number!), queryParameters: [:]) else {
@@ -187,7 +209,7 @@ class PlantInfoVC: UIViewController{
             return
         }
         
-        print(url) 
+        print(url)
         
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
@@ -218,9 +240,9 @@ class PlantInfoVC: UIViewController{
                 confirmationAlert.addAction(okAction)
                 self.present(confirmationAlert, animated: true, completion: nil)
             }
-
+            
         }
-
+        
         task.resume()
         
         
@@ -323,9 +345,9 @@ class PlantInfoVC: UIViewController{
                         return
                     }
                     
-                    print("습도: " + humidity)
-                    print("수분: " + moisture)
-                    print("온도: " + temperature)
+                    print("습도: " + humidity + " %")
+                    print("토양 수분함량: " + moisture + " %")
+                    print("온도: " + temperature + " °C")
                     
                     DispatchQueue.main.async {
                         
@@ -333,11 +355,11 @@ class PlantInfoVC: UIViewController{
                         self.plantNameLabel.text = self.plantName
                         self.dayFromBirthDateLabel.text = "\(self.plantName!)과 함께한지 벌써 \(String(self.dayDifference))일이 지났어요"
                         self.giveWaterLabel.text = "\(self.plantName!)에게 물을 줄 수 있어요"
-                        self.datatempLabel.text = "온도 : " + temperature + "도"
-                        self.dataMoisLabel.text = "토양의 습도 :" + moisture
-                        self.dataHumiLabel.text = "대기의 습도 :" + humidity
+                        self.datatempLabel.text = "온도: " + temperature + " °C"
+                        self.dataMoisLabel.text = "토양 수분함량: " + moisture + " %"
+                        self.dataHumiLabel.text = "습도: " + humidity + " %"
                         
-                        //self.requestimage()
+                        
                     }
                     
                 } catch {
@@ -345,7 +367,7 @@ class PlantInfoVC: UIViewController{
             }
             else{
                 DispatchQueue.main.async {
-                    //self.requestimage() // dataRequest의 네트워크 작업이 완료된 후 requestImage 호출
+                    
                 }
             }
             
@@ -410,6 +432,75 @@ class PlantInfoVC: UIViewController{
         }
     }
     
+    fileprivate func getImageList(completion: @escaping () -> Void){
+        guard let url = URL(string: realstrURL + "s3") else {
+            print("Invalid URL")
+            return
+        }
+        print("\(realstrURL)s3")
+        
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            if let error = error {
+                print("Error fetching data: \(error)")
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                print("HTTP Error: \(response ?? URLResponse())")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data received")
+                return
+            }
+            
+            do {
+                let decodedData = try JSONDecoder().decode(ImageList.self, from: data)
+                DispatchQueue.main.async {
+                    self?.validDates = decodedData
+                    completion()
+                    self?.extractDate()
+                    self?.validDatePickerView.reloadAllComponents()
+                    
+                }
+            } catch {
+                print("Error decoding data: \(error)")
+            }
+        }
+        task.resume()
+        
+        
+    }
+    
+    fileprivate func extractDate(){
+        
+        print(#fileID, #function, #line, "- validDates \(validDates)")
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "yyyyMMdd_HHmmss"
+        
+        let outputFormatter = DateFormatter()
+        outputFormatter.dateFormat = "yy.MM.dd_HH시mm분ss초"
+        //outputFormatter.dateFormat = "MM월 dd일 HH시 mm분 ss초"
+        
+        for dateString in validDates {
+            // "plant_image/image_" 부분과 ".jpg"를 제거합니다.
+            let trimmedString = dateString.replacingOccurrences(of: "plant_image/image_", with: "").replacingOccurrences(of: ".jpg", with: "")
+            
+            // 문자열을 Date 객체로 변환합니다.
+            if let date = inputFormatter.date(from: trimmedString) {
+                // Date 객체를 원하는 형식의 문자열로 변환하여 배열에 추가합니다.
+                let formattedString = outputFormatter.string(from: date)
+                validDates_pickerData.append(formattedString)
+            } else {
+                print("Invalid date format: \(trimmedString)")
+            }
+        }
+        
+        print(#fileID, #function, #line, "- validDates_pickerData \(validDates_pickerData)")
+        
+        
+    }
     func setUpUI() {
         plantDataView.layer.cornerRadius = viewCornerRadius
         plantDataView.clipsToBounds = true
@@ -446,19 +537,19 @@ extension PlantInfoVC: UIPickerViewDelegate, UIPickerViewDataSource  {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return validDates.count
+        return validDates_pickerData.count
     }
     
     // UIPickerView Delegate Methods
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return validDates[row]
+        return validDates_pickerData[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        print("Selected date: \(validDates[row])")
+        print("Selected date: \(validDates_pickerData[row])")
         
         // 선택된 날짜를 확인하고 알림을 표시합니다.
-        showConfirmationAlert(forDate: validDates[row])
+        showConfirmationAlert(forDate: validDates_pickerData[row])
     }
     
     func showConfirmationAlert(forDate date: String) {
@@ -466,6 +557,7 @@ extension PlantInfoVC: UIPickerViewDelegate, UIPickerViewDataSource  {
         
         let yesAction = UIAlertAction(title: "예", style: .default) { [weak self] _ in
             // "예" 버튼을 눌렀을 때의 동작을 여기에 작성합니다.
+            
             self?.presentNextViewController(date)
         }
         alertController.addAction(yesAction)
@@ -490,24 +582,34 @@ extension PlantInfoVC: UIPickerViewDelegate, UIPickerViewDataSource  {
         secondViewController.selectedDate = selectedDate
         secondViewController.plant_number = plant_number!
         secondViewController.plantName = plantName!
+        secondViewController.delegate = self
         
         secondViewController.modalPresentationStyle = .fullScreen  // 화면을 꽉 채우기
         
         // 뷰 컨트롤러 present
         self.present(secondViewController, animated: true, completion: nil)
     }
+    
+    
     func requestimage(){
         
+        var fileURL: URL? = nil
         
-        if let savedURL = UserDefaults.standard.url(forKey: "picFileURL") {
+        
+        if let savedURL = UserDefaults.standard.url(forKey: "recpicFilePath") {
             self.picFileURL = savedURL
+            print(#fileID, #function, #line, "- savedURL - \(savedURL)")
         }
         
-        print("requestimage func worked!!")
-        print("S3 bucket: \(self.s3BucketName)")
-        print("fileKey: \(self.fileKey)")
+//        if let savedURL = UserDefaults.standard.url(forKey: "picFileURL") {
+//            self.picFileURL = savedURL
+//            print(#fileID, #function, #line, "- savedURL - \(savedURL)")
+//        }
         
-
+        print(#fileID, #function, #line, "requestimage func worked!!")
+        print(#fileID, #function, #line, "S3 bucket: \(self.s3BucketName)")
+        print(#fileID, #function, #line, "fileKey: \(self.fileKey)")
+        
         
         guard let transferUtility = AWSS3TransferUtility.s3TransferUtility(forKey: utilityKey)
         else
@@ -545,18 +647,36 @@ extension PlantInfoVC: UIPickerViewDelegate, UIPickerViewDataSource  {
                     if let imagedata = data {
                         print("Image data exists with size: \(imagedata.count) bytes")
                         
+                        
                         //데이터를 파일로 저장하여 직접 확인
                         let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
                         
+                        //let fileURL = documentsURL.appendingPathComponent("test_image.jpg")
                         
-                        let fileURL = documentsURL.appendingPathComponent("test_image.jpg")
+                        if let lastValidDate = self?.validDates.last {
+                            let sanitizedFileName = lastValidDate.replacingOccurrences(of: "plant_image/", with: "")
+                            print(#fileID, #function, #line, "- sanitizedFileName \(sanitizedFileName)")
+                            fileURL = documentsURL.appendingPathComponent(sanitizedFileName)
+                            self?.picFileURL = fileURL
+                        } else {
+                            print("There is no last element in validDates array")
+                        }
                         
-                        self?.picFileURL = fileURL
-                        UserDefaults.standard.set(fileURL, forKey: "picFilePath")
+                        if let fileURL = fileURL {
+                            UserDefaults.standard.set(fileURL, forKey: "recpicFilePath")
+                            print("File saved at: \(fileURL.absoluteString)")
+                            try? imagedata.write(to: fileURL)
+                            print("Image data written to \(fileURL)")
+                        } else {
+                            print("File URL is nil")
+                        }
                         
-                        print("File saved at: \(fileURL.absoluteString)")
-                        try? imagedata.write(to: fileURL)
-                        print("Image data written to \(fileURL)")
+                        
+                        //                        UserDefaults.standard.set(fileURL, forKey: "picFilePath")
+                        //
+                        //                        print("File saved at: \(fileURL.absoluteString)")
+                        //                        try? imagedata.write(to: fileURL)
+                        //                        print("Image data written to \(fileURL)")
                         
                         if let image = UIImage(data: imagedata) {
                             self?.plantImageView.image = image
@@ -592,15 +712,35 @@ extension PlantInfoVC: UIPickerViewDelegate, UIPickerViewDataSource  {
         
     }
     
-    func checkIfFileURLExists() -> Bool {
-        if let savedPath = UserDefaults.standard.string(forKey: "picFilePath") {
+    func checkIfFileURLValids() -> Bool {
+        
+        if let savedPath = UserDefaults.standard.string(forKey: "recpicFilePath") {
             self.picFileURL = URL(fileURLWithPath: savedPath)
-            print("FileURL Exist! : \(String(describing: self.picFileURL?.absoluteString))")
+            print(#fileID, #function, #line, "FileURL Exist! : \(String(describing: self.picFileURL?.absoluteString))")
+            
             return true
         } else {
-            print("FileURL doesn't Exist!")
+            print(#fileID, #function, #line, "- FileURL doesn't Exist!")
             return false
         }
+        
+//        if let savedPath = UserDefaults.standard.string(forKey: "recpicFilePath") {
+//            self.picFileURL = URL(fileURLWithPath: savedPath)
+//            let savedFileName = self.picFileURL?.lastPathComponent
+//            print("Saved File Name: \(String(describing: savedFileName))")
+//
+//            if savedFileName == fileName {
+//                print("FileURL Exist and matches the file name! : \(String(describing: self.picFileURL?.absoluteString))")
+//                return true
+//            } else {
+//                print("FileURL exists but does not match the file name!")
+//                return false
+//            }
+//        } else {
+//            print("FileURL doesn't Exist!")
+//            return false
+//        }
+        
     }
     
     func setUpAWSS3(){
@@ -621,18 +761,38 @@ extension PlantInfoVC: UIPickerViewDelegate, UIPickerViewDataSource  {
             transferUtilityConfiguration: tuConf,
             forKey: utilityKey
         )
-    
+        
         print("AWSS3TransferUtility instance: \(AWSS3TransferUtility.default())")
         
-        //        let dateFormat = DateFormatter()
-        //        dateFormat.dateFormat = "yyyyMMdd/"
-        //        fileKey += dateFormat.string(from: Date())
-        //        fileKey += String(Int64(Date().timeIntervalSince1970)) + "_"
-        //        fileKey += UUID().uuidString + ".png"
-        fileKey += "image_20230907_205731.jpg"
+        fileKey += validDates.last?.replacingOccurrences(of: "plant_image/", with: "") ?? "image_20230907_205731.jpg"
+        fileName = validDates.last?.replacingOccurrences(of: "plant_image/", with: "") ?? "image_20230907_205731.jpg"
         
-        print(fileKey)
+        print(#fileID, #function, #line, "- validDates.count\(validDates.count)")
+        print(#fileID, #function, #line, "- validDates.last \(validDates.last)")
+        print(#fileID, #function, #line, "- fileKey \(fileKey)")
+        
+        
+        
+        
     }
+    func refreshUIOnViewController(completion: @escaping () -> Void) {
+        
+        DispatchQueue.global().async {
+            self.getImageList {
+                self.setUpAWSS3()
+            }
+            
+            self.dataRequest()
+            self.setUpUI()
+            DispatchQueue.main.async {
+                completion()
+                self.insertImage()
+            }
+        }
+    }
+
+    
+    
 }
 extension PlantInfoVC: CocoaMQTTDelegate, CocoaMQTT5Delegate{
     // self signed delegate
@@ -660,7 +820,7 @@ extension PlantInfoVC: CocoaMQTTDelegate, CocoaMQTT5Delegate{
         TRACE("ack: \(ack)")
         
         if ack == .accept {
-            mqtt.subscribe("debro/camera", qos: CocoaMQTTQoS.qos1)
+            mqtt.subscribe("debro/water", qos: CocoaMQTTQoS.qos1)
             //            let chatViewController = storyboard?.instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController
             //            chatViewController?.mqtt = mqtt
             //            chatViewController?.mqttVersion = mqttVesion
@@ -740,7 +900,7 @@ extension PlantInfoVC: CocoaMQTTDelegate, CocoaMQTT5Delegate{
             }
             
             mqtt5.subscribe("debro/water", qos: CocoaMQTTQoS.qos1)
-
+            
             
         }
     }
@@ -853,17 +1013,18 @@ extension PlantInfoVC: CocoaMQTTDelegate, CocoaMQTT5Delegate{
                 var current_date_string = formatter.string(from: Date())
                 //var current_date_string = formatter.string(from: Date())
                 print(current_date_string)
-                mqtt5.publish("debro/water", withString: "run water " + current_date_string , qos: .qos1, DUP: true, retained: false, properties: .init())
+                //                mqtt5.publish("debro/water", withString: "run water " + current_date_string , qos: .qos1, DUP: true, retained: false, properties: .init())
+                mqtt5.publish("debro/water", withString: "run water" , qos: .qos1, DUP: true, retained: false, properties: .init())
             }
             
             
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-                mqtt5.disconnect()
+                //mqtt5.disconnect()
             }
         } else {
             print("MQTT Connection did not Connected!!")
         }
-
+        
         
         
         

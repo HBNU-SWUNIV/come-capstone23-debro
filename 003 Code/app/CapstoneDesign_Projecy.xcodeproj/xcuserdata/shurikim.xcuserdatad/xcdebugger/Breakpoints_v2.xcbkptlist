@@ -218,5 +218,53 @@
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "45826D05-4BEB-44C8-B42D-6AE474FA61E0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CapstoneDesign_Projecy/RenewalVC/PlantInfoVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "774"
+            endingLineNumber = "774"
+            landmarkName = "setUpAWSS3()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "45826D05-4BEB-44C8-B42D-6AE474FA61E0 - fbcaa479fe6b62b4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CapstoneDesign_Projecy.PlantInfoVC.setUpAWSS3() -&gt; ()"
+                  moduleName = "CapstoneDesign_Projecy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shurikim/come-capstone23-debro/003%20Code/app/CapstoneDesign_Projecy/RenewalVC/PlantInfoVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "746"
+                  endingLineNumber = "746"
+                  offsetFromSymbolStart = "3472">
+               </Location>
+               <Location
+                  uuid = "45826D05-4BEB-44C8-B42D-6AE474FA61E0 - fbcaa479fe6b6295"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CapstoneDesign_Projecy.PlantInfoVC.setUpAWSS3() -&gt; ()"
+                  moduleName = "CapstoneDesign_Projecy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shurikim/come-capstone23-debro/003%20Code/app/CapstoneDesign_Projecy/RenewalVC/PlantInfoVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "747"
+                  endingLineNumber = "747"
+                  offsetFromSymbolStart = "3472">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>
