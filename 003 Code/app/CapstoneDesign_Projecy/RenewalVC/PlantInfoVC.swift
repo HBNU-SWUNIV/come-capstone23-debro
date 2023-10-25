@@ -672,12 +672,6 @@ extension PlantInfoVC: UIPickerViewDelegate, UIPickerViewDataSource  {
                         }
                         
                         
-                        //                        UserDefaults.standard.set(fileURL, forKey: "picFilePath")
-                        //
-                        //                        print("File saved at: \(fileURL.absoluteString)")
-                        //                        try? imagedata.write(to: fileURL)
-                        //                        print("Image data written to \(fileURL)")
-                        
                         if let image = UIImage(data: imagedata) {
                             self?.plantImageView.image = image
                         } else {
