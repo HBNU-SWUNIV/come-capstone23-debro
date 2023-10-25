@@ -2,7 +2,7 @@ import os
 import datetime
 import cv2
 
-def capture_image():
+def testcapture_image():
     # 저장 경로 설정
     save_directory = "/home/teamdebro/debro/image" 
     
@@ -34,4 +34,4 @@ def capture_image():
         return None
         
         
-capture_image()
+testcapture_image()

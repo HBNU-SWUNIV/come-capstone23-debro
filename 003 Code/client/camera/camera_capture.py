@@ -1,7 +1,7 @@
 import os
 import datetime
 import cv2
-from image_uploader import upload_image
+from .image_uploader import upload_image
 
 def capture_image():
     # 저장 경로 설정
@@ -34,7 +34,8 @@ def capture_image():
         capture.release()
         cv2.destroyAllWindows()
         return None
-        
+
+
     
 
 
