@@ -60,4 +60,8 @@
 ## Conclusion
 
 ## Project Outcome
-- Server 
+- Server
+
+- Client
+
+- Application
