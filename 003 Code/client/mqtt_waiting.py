@@ -1,6 +1,7 @@
 import paho.mqtt.client as mqtt
 from datetime import datetime
-from camera_capture import capture_image
+
+import camera
 
 # MQTT 브로커 정보
 broker_address = "192.168.45.139"  # 브로커 주소를 입력
@@ -24,7 +25,7 @@ def on_message(client, userdata, message):
     
     # 메시지를 수신하면 실행할 특정 코드를 작성.
     if payload == "run camera":
-        capture_image()
+        camera.capture_image()
 
 # MQTT 클라이언트 객체 생성
 client = mqtt.Client()

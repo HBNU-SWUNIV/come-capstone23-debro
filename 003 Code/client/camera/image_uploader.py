@@ -19,3 +19,4 @@ def upload_image(file_name):
         print("이미지 업로드 완료:", file_key)
     except Exception as e:
         print("이미지 업로드 실패:", str(e))
+

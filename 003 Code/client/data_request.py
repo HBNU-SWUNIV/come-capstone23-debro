@@ -4,7 +4,7 @@ import schedule
 import time
 import signal
 
-from sensor_module import read_adc, read_dht22, convert_to_percentage, get_pH_value, spi
+import sensor
 
 
 # 서버 정보
@@ -17,14 +17,14 @@ stopflag = False
 # 전송 중단시
 def stoptransmission(signal, frame):
     global stopflag
-    spi.close()
+    sensor.spi.close()
     stopflag = True
     
 def send_data():
     
-    humidity, temperature = read_dht22()
-    moisture = read_adc(0)
-    moisture = convert_to_percentage(moisture)
+    humidity, temperature = sensor.read_dht22()
+    moisture = sensor.read_adc(0)
+    moisture = sensor.convert_to_percentage(moisture)
     #pH = get_pH_value(3)
     
     if humidity is not None and temperature is not None and moisture is not None:
