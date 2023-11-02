@@ -41,17 +41,17 @@
 
 -   ### Client
 
-<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
+    <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
 
 -   ### Application
 
-<img src="https://img.shields.io/badge/Swift-F05138?style=for-the-badge&logo=Swift&logoColor=white">
+    <img src="https://img.shields.io/badge/Swift-F05138?style=for-the-badge&logo=Swift&logoColor=white">
 
--   ### System Requirements
-    -   식물 급수 자동화
-    -   식물 관리 솔루션 제공을 위한 알고리즘
-    -   플랜터 원격 제어 및 모니터링을 위한 전용 앱
+- ### System Architecture
+    - 흐름도는 다음과 같습니다.
+![흐름도](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/101079472/1c1a2b6a-4efa-4d4a-bf04-32463f23fa71)
 
+    - 
 ## Case Study
 
 -   ### Description
@@ -65,4 +65,7 @@
 ## Project Outcome
 
 -   Client
+![client_raspberry](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/101079472/f519f12a-bb19-4760-9967-deb7cb4bf78a)
+![client_yolo](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/101079472/01b98296-948e-41eb-94f3-a99eff6b0e89)
+
 -   Application
