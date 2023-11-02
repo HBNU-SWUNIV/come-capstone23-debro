@@ -33,17 +33,20 @@
     5. 일회성 솔루션: 일부 기존 자동화 시스템은 특정 종류의 식물이나 환경에만 적합하며, 다양한 식물과 환경에 대응하기 어려울 수 있습니다.
 
 ## System Design
-- ### Server
-<img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white"> <img src="https://img.shields.io/badge/MariaDB-1F305F?style=for-the-badge&logo=mariadbfoundation&logoColor=white"> <br>
-<img src="https://img.shields.io/badge/Amazon_EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img src="https://img.shields.io/badge/Amazon_RDS-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white">
 
-- ### Client
+-   ### Server
+
+    <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white"> <img src="https://img.shields.io/badge/MariaDB-1F305F?style=for-the-badge&logo=mariadbfoundation&logoColor=white"> <br>
+    <img src="https://img.shields.io/badge/Amazon_EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img src="https://img.shields.io/badge/Amazon_RDS-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white">
+
+-   ### Client
+
 <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
 
-- ### Application
+-   ### Application
+
 <img src="https://img.shields.io/badge/Swift-F05138?style=for-the-badge&logo=Swift&logoColor=white">
-    
-    
+
 -   ### System Requirements
     -   식물 급수 자동화
     -   식물 관리 솔루션 제공을 위한 알고리즘
@@ -60,8 +63,6 @@
 ## Conclusion
 
 ## Project Outcome
-- Server
 
-- Client
-
-- Application
+-   Client
+-   Application
