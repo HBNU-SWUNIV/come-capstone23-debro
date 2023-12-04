@@ -69,3 +69,36 @@
 ![client_yolo](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/101079472/01b98296-948e-41eb-94f3-a99eff6b0e89)
 
 -   Application
+    - ### 구현된 기능
+        1. **현재 날씨 조회:** 기상청 API를 이용하여 현재 날씨 정보를 조회합니다.
+        2. **플랜터의 현재 데이터 조회:** HTTP 통신으로 플랜터의 센서 값과 생장 추이를 실시간으로 조회하는 기능을 개발했습니다.
+        3. **이미지 저장 및 조회:** AWS S3를 통해 플랜터의 과거 사진을 저장하고 조회하는 기능을 구현했습니다.
+        4. **플랜터 제어:** MQTT 통신을 통해 플랜터의 카메라와 워터펌프 제어 기능을 구현했습니다.
+        5. **플랜터 관리:** 애플리케이션 내에서 플랜터를 추가하고 삭제하는 기능을 구현했습니다.
+
+    - ### 애플리케이션 작동 스크린샷
+        - **날씨 조회, 플랜터 화면**
+            ![launchScreen](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/c4118471-4f47-4a19-8713-578f25c23629)
+            ![Main](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/a635dfca-b5c1-4ea3-b836-b99bd8f1468c)
+            ![Info1](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/47444607-68fb-48f3-b655-f279ad008b6a)
+            ![Info2](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/1b84d961-a7b4-4476-8f04-b1af54a3b50b)
+            ![Info3](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/6042c422-cd4a-498c-bd73-c256459c9580)
+            ![Info4](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/545f4fd0-51d6-4df6-a72e-45aeb3fce237)
+        - **이미지 저장 및 조회 화면**
+            ![Pic2](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/64c1bd5b-9b1d-4eea-9494-e1b26dada200)
+            ![Pic3](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/e68d0eee-19d7-4da5-94d7-456f24edc889)
+            ![Pic4](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/316c246b-3145-45c4-be03-43e5510e8e60)
+            ![Pic5](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/ec0ad84f-5ad1-4ff0-9783-f30571e9e1d5)
+        - **플랜터 제어 화면**
+            ![camera](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/5292c227-3b7a-4d18-acbb-433ad7365925)
+            ![water](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/efcdc30d-a2ac-429d-b5a1-49c144ad19ba)
+        - **플랜터 등록, 제거 화면**
+            ![Reg3](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/cbce397d-bb89-4484-b1ff-efc514420b08)
+            ![Reg4](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/ebb38375-5306-4a13-9d03-bd1a21f018cc)
+            ![Reg5](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/31d2a999-5776-408d-85ec-97958080355f)
+            ![Reg6](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/ef92a88c-ef0c-4785-9810-b89d1620bd4f)
+            ![Reg7](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/5f687dbf-11d9-4234-afe6-e73b85e1d1e6)
+            ![Reg8](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/7efeb0e1-f725-4136-a1e3-f431388cfdb3)
+            ![Del1](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/6153dc3b-ebf8-4d43-932c-ecdcef3ceab0)
+            ![Del2](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/8013f03f-afba-4c8e-9d05-3036a67ce121)
+            ![Del3_Reg1](https://github.com/HBNU-SWUNIV/come-capstone23-debro/assets/42128057/efcab537-8bdf-459b-9922-b6d722ae92dc)
