@@ -228,8 +228,8 @@
             filePath = "CapstoneDesign_Projecy/RenewalVC/PlantInfoVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "774"
-            endingLineNumber = "774"
+            startingLineNumber = "788"
+            endingLineNumber = "788"
             landmarkName = "setUpAWSS3()"
             landmarkType = "7">
             <Locations>

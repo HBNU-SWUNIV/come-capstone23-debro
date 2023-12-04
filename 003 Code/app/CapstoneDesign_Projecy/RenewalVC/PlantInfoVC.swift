@@ -48,6 +48,9 @@ class PlantInfoVC: UIViewController, ViewControllerDelegate_completion{
     var fileKey = "plant_image/"
     var filelistkey = "plant_image/"
     
+    var currentDateString: String = ""
+    var recentFileKey: String = ""
+    
     var picFileURL: URL?
     
     weak var delegate: ViewControllerDelegate?
@@ -85,32 +88,41 @@ class PlantInfoVC: UIViewController, ViewControllerDelegate_completion{
         validDatePickerView.delegate = self
         validDatePickerView.dataSource = self
         
-        getImageList {
-            self.setUpAWSS3()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMddHHmmss"
+        currentDateString = dateFormatter.string(from: Date())
+
+        recentFileKey = "recentFileKey" + currentDateString
+        
+        
+        self.getImageList {
+            self.extractDate() // extractDate를 먼저 호출
+            self.setUpAWSS3() // 그 다음 setUpAWSS3 호출
+
+            DispatchQueue.main.async { // UI 관련 코드는 메인 스레드에서 실행
+                self.dataRequest()
+                self.setUpUI()
+                self.requestimage()
+            }
         }
         
-        print("PlantName: \(plantName!), birthDate: \(birthDate!)")
-        //setUpAWSS3()
         
-        dataRequest()
-        setUpUI()
-        
-        print(#fileID, #function, #line, "- ")
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         print("PlantViewController Will be Appeared!")
         
-        insertImage() // 이후 requestimage() 실행
-
+        //insertImage() // 이후 requestimage() 실행
+        
+        //requestimage()
         
     }
     override func viewDidAppear(_ animated: Bool) {
         print("PlantViewController Appeared!")
-    
         
-        print("imageView:\(String(describing: plantImageView.image?.scale))")
+        
+        //print("imageView:\(String(describing: plantImageView.image?.scale))")
         
     }
     
@@ -170,10 +182,17 @@ class PlantInfoVC: UIViewController, ViewControllerDelegate_completion{
     func insertImage(){
         if checkIfFileURLValids(){
             
-            if let savedURL = UserDefaults.standard.url(forKey: "recpicFilePath") {
+
+            
+            if let savedURL = UserDefaults.standard.url(forKey: recentFileKey) {
                 self.picFileURL = savedURL
                 print(#fileID, #function, #line, "- savedURL - \(savedURL)")
             }
+            
+//            if let savedURL = UserDefaults.standard.url(forKey: recentFileKey) {
+//                self.picFileURL = savedURL
+//                print(#fileID, #function, #line, "- savedURL - \(savedURL)")
+//            }
             
             do {
                 //let imageData = try Data(contentsOf: picFileURL)
@@ -196,6 +215,7 @@ class PlantInfoVC: UIViewController, ViewControllerDelegate_completion{
                 print("Error loading image : \(error)")
             }
         } else {
+            print(#fileID, #function, #line, "- checkIfFileURLValids else block")
             requestimage()
         }
         
@@ -352,9 +372,9 @@ class PlantInfoVC: UIViewController, ViewControllerDelegate_completion{
                     DispatchQueue.main.async {
                         
                         
-                        self.plantNameLabel.text = self.plantName
-                        self.dayFromBirthDateLabel.text = "\(self.plantName!)과 함께한지 벌써 \(String(self.dayDifference))일이 지났어요"
-                        self.giveWaterLabel.text = "\(self.plantName!)에게 물을 줄 수 있어요"
+                        //                        self.plantNameLabel.text = self.plantName
+                        //                        self.dayFromBirthDateLabel.text = "\(self.plantName!)과 함께한지 벌써 \(String(self.dayDifference))일이 지났어요"
+                        //                        self.giveWaterLabel.text = "\(self.plantName!)에게 물을 줄 수 있어요"
                         self.datatempLabel.text = "온도: " + temperature + " °C"
                         self.dataMoisLabel.text = "토양 수분함량: " + moisture + " %"
                         self.dataHumiLabel.text = "습도: " + humidity + " %"
@@ -523,6 +543,19 @@ class PlantInfoVC: UIViewController, ViewControllerDelegate_completion{
         deleteButton.layer.cornerRadius = btnCornerRadius
         deleteButton.clipsToBounds = true
         
+        
+        self.plantNameLabel.text = self.plantName
+        self.dayFromBirthDateLabel.text = "\(self.plantName!)과 함께한지 벌써 \(String(self.dayDifference))일이 지났어요"
+        self.giveWaterLabel.text = "\(self.plantName!)에게 물을 줄 수 있어요"
+        
+        DispatchQueue.main.async {
+            
+            
+            
+            
+            
+        }
+        
     }
     
     
@@ -596,15 +629,15 @@ extension PlantInfoVC: UIPickerViewDelegate, UIPickerViewDataSource  {
         var fileURL: URL? = nil
         
         
-        if let savedURL = UserDefaults.standard.url(forKey: "recpicFilePath") {
+        if let savedURL = UserDefaults.standard.url(forKey: recentFileKey) {
             self.picFileURL = savedURL
             print(#fileID, #function, #line, "- savedURL - \(savedURL)")
         }
         
-//        if let savedURL = UserDefaults.standard.url(forKey: "picFileURL") {
-//            self.picFileURL = savedURL
-//            print(#fileID, #function, #line, "- savedURL - \(savedURL)")
-//        }
+        //        if let savedURL = UserDefaults.standard.url(forKey: "picFileURL") {
+        //            self.picFileURL = savedURL
+        //            print(#fileID, #function, #line, "- savedURL - \(savedURL)")
+        //        }
         
         print(#fileID, #function, #line, "requestimage func worked!!")
         print(#fileID, #function, #line, "S3 bucket: \(self.s3BucketName)")
@@ -663,7 +696,7 @@ extension PlantInfoVC: UIPickerViewDelegate, UIPickerViewDataSource  {
                         }
                         
                         if let fileURL = fileURL {
-                            UserDefaults.standard.set(fileURL, forKey: "recpicFilePath")
+                            UserDefaults.standard.set(fileURL, forKey: self!.recentFileKey)
                             print("File saved at: \(fileURL.absoluteString)")
                             try? imagedata.write(to: fileURL)
                             print("Image data written to \(fileURL)")
@@ -671,12 +704,6 @@ extension PlantInfoVC: UIPickerViewDelegate, UIPickerViewDataSource  {
                             print("File URL is nil")
                         }
                         
-                        
-                        //                        UserDefaults.standard.set(fileURL, forKey: "picFilePath")
-                        //
-                        //                        print("File saved at: \(fileURL.absoluteString)")
-                        //                        try? imagedata.write(to: fileURL)
-                        //                        print("Image data written to \(fileURL)")
                         
                         if let image = UIImage(data: imagedata) {
                             self?.plantImageView.image = image
@@ -714,32 +741,17 @@ extension PlantInfoVC: UIPickerViewDelegate, UIPickerViewDataSource  {
     
     func checkIfFileURLValids() -> Bool {
         
-        if let savedPath = UserDefaults.standard.string(forKey: "recpicFilePath") {
+        if let savedPath = UserDefaults.standard.string(forKey: recentFileKey) {
             self.picFileURL = URL(fileURLWithPath: savedPath)
             print(#fileID, #function, #line, "FileURL Exist! : \(String(describing: self.picFileURL?.absoluteString))")
             
+            
+            //return false
             return true
         } else {
             print(#fileID, #function, #line, "- FileURL doesn't Exist!")
             return false
         }
-        
-//        if let savedPath = UserDefaults.standard.string(forKey: "recpicFilePath") {
-//            self.picFileURL = URL(fileURLWithPath: savedPath)
-//            let savedFileName = self.picFileURL?.lastPathComponent
-//            print("Saved File Name: \(String(describing: savedFileName))")
-//
-//            if savedFileName == fileName {
-//                print("FileURL Exist and matches the file name! : \(String(describing: self.picFileURL?.absoluteString))")
-//                return true
-//            } else {
-//                print("FileURL exists but does not match the file name!")
-//                return false
-//            }
-//        } else {
-//            print("FileURL doesn't Exist!")
-//            return false
-//        }
         
     }
     
@@ -764,6 +776,8 @@ extension PlantInfoVC: UIPickerViewDelegate, UIPickerViewDataSource  {
         
         print("AWSS3TransferUtility instance: \(AWSS3TransferUtility.default())")
         
+        
+        print(validDates.last ?? "There's Nothing")
         fileKey += validDates.last?.replacingOccurrences(of: "plant_image/", with: "") ?? "image_20230907_205731.jpg"
         fileName = validDates.last?.replacingOccurrences(of: "plant_image/", with: "") ?? "image_20230907_205731.jpg"
         
@@ -777,6 +791,12 @@ extension PlantInfoVC: UIPickerViewDelegate, UIPickerViewDataSource  {
     }
     func refreshUIOnViewController(completion: @escaping () -> Void) {
         
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMddHHmmss"
+        currentDateString = dateFormatter.string(from: Date())
+
+        recentFileKey = "recentFileKey" + currentDateString
         DispatchQueue.global().async {
             self.getImageList {
                 self.setUpAWSS3()
@@ -790,7 +810,7 @@ extension PlantInfoVC: UIPickerViewDelegate, UIPickerViewDataSource  {
             }
         }
     }
-
+    
     
     
 }
@@ -820,7 +840,7 @@ extension PlantInfoVC: CocoaMQTTDelegate, CocoaMQTT5Delegate{
         TRACE("ack: \(ack)")
         
         if ack == .accept {
-            mqtt.subscribe("debro/water", qos: CocoaMQTTQoS.qos1)
+            mqtt.subscribe("debro/camera", qos: CocoaMQTTQoS.qos1)
             //            let chatViewController = storyboard?.instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController
             //            chatViewController?.mqtt = mqtt
             //            chatViewController?.mqttVersion = mqttVesion
@@ -899,7 +919,7 @@ extension PlantInfoVC: CocoaMQTTDelegate, CocoaMQTT5Delegate{
                 print("properties topicAliasMaximum: \(String(describing: connAckData!.topicAliasMaximum))")
             }
             
-            mqtt5.subscribe("debro/water", qos: CocoaMQTTQoS.qos1)
+            mqtt5.subscribe("debro/camera", qos: CocoaMQTTQoS.qos1)
             
             
         }
@@ -994,9 +1014,9 @@ extension PlantInfoVC: CocoaMQTTDelegate, CocoaMQTT5Delegate{
         mqtt5.username = "Mac Test"
         mqtt5.password = "Test1"
         
-        let lastWillMessage = CocoaMQTT5Message(topic: "debro/water", string: "did disconnect")
+        let lastWillMessage = CocoaMQTT5Message(topic: "debro/camera", string: "did disconnect")
         //lastWillMessage.contentType = "JSON"
-        lastWillMessage.willResponseTopic = "debro/water"
+        lastWillMessage.willResponseTopic = "debro/camera"
         lastWillMessage.willExpiryInterval = .max
         lastWillMessage.willDelayInterval = 0
         lastWillMessage.qos = .qos1
@@ -1014,7 +1034,7 @@ extension PlantInfoVC: CocoaMQTTDelegate, CocoaMQTT5Delegate{
                 //var current_date_string = formatter.string(from: Date())
                 print(current_date_string)
                 //                mqtt5.publish("debro/water", withString: "run water " + current_date_string , qos: .qos1, DUP: true, retained: false, properties: .init())
-                mqtt5.publish("debro/water", withString: "run water" , qos: .qos1, DUP: true, retained: false, properties: .init())
+                mqtt5.publish("debro/camera", withString: "run waterpump" , qos: .qos1, DUP: true, retained: false, properties: .init())
             }
             
             

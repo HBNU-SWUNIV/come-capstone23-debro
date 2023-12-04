@@ -146,17 +146,24 @@ struct PlantData: Codable {
         // time 이 null 일 경우 오늘 날짜 리턴 로직
         // For JSON null values, assign empty strings
         let lengthValue = (try? container.decodeIfPresent(String.self, forKey: .length)) ?? ""
-        length = lengthValue.isEmpty ? getCurrentDateString() : lengthValue
+        length = lengthValue.isEmpty ? getDateBefore30Days() : lengthValue
         
         // Handle time with custom logic
         let timeValue = (try? container.decodeIfPresent(String.self, forKey: .time)) ?? ""
-        time = timeValue.isEmpty ? getCurrentDateString() : timeValue
+        time = timeValue.isEmpty ? getDateBefore30Days() : timeValue
         
         // Helper function to get current date in "yyyy-mm-dd" format
         func getCurrentDateString() -> String {
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd"
             return formatter.string(from: Date())
+        }
+        
+        func getDateBefore30Days() -> String {
+            let thirtyDaysBefore = Calendar.current.date(byAdding: .day, value: -133, to: Date())!
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            return formatter.string(from: thirtyDaysBefore)
         }
     }
     
