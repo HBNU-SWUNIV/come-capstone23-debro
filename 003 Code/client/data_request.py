@@ -7,13 +7,6 @@ import signal
 import sensor
 
 
-# 서버 정보
-#url = 'http://hyunul.com/sensor/'
-url = 'http://43.201.169.32/sensor/'
-headers = {"Content-Type": "application/json"}
-
-# 임의 중단 플래그
-stopflag = False
 # 전송 중단시
 def stoptransmission(signal, frame):
     global stopflag
@@ -46,12 +39,21 @@ def send_data():
         print('FC-28 센서 값 읽기 실패')
     else:
         print("DHT22 센서 값 읽기 실패")
-        
-#시그널 핸들러 등록
-signal.signal(signal.SIGINT, stoptransmission)
+if __name__ == '__main__':
+    
+    # 서버 정보
+    #url = 'http://hyunul.com/sensor/'
+    url = 'http://43.201.169.32/sensor/'
+    headers = {"Content-Type": "application/json"}
 
-schedule.every(5).seconds.do(send_data)
+    # 임의 중단 플래그
+    stopflag = False
 
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+    #시그널 핸들러 등록
+    signal.signal(signal.SIGINT, stoptransmission)
+
+    schedule.every(10).seconds.do(send_data)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
